@@ -18,6 +18,7 @@ type UsersDB struct {
 func New(db *sqlx.DB) *UsersDB {
 	return &UsersDB{db: db}
 }
+
 func (db *UsersDB) Add(ctx context.Context, user model.User) error {
 	query := `
 	insert into users(
@@ -29,6 +30,7 @@ func (db *UsersDB) Add(ctx context.Context, user model.User) error {
 	    $1,$2,$3,$4  
 	)
 	`
+
 	_, err := db.db.ExecContext(ctx, query,
 		user.Email,
 		user.BirthInfo,
