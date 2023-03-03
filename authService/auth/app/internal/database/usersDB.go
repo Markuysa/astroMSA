@@ -2,6 +2,7 @@ package database
 
 import (
 	"authService/app/internal/model"
+	"authService/app/pkg/workers/astroWorker"
 	"context"
 	"errors"
 	"github.com/jmoiron/sqlx"
@@ -30,7 +31,7 @@ func (db *UsersDB) Add(ctx context.Context, user model.User) error {
 	    $1,$2,$3,$4  
 	)
 	`
-
+	user.Sign = astroWorker.CalculateSign(user.BirthInfo)
 	_, err := db.db.ExecContext(ctx, query,
 		user.Email,
 		user.BirthInfo,

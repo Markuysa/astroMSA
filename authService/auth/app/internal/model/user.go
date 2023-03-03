@@ -1,15 +1,14 @@
 package model
 
 import (
-	"time"
-
 	"gorm.io/gorm"
+	"time"
 )
 
 type User struct {
 	gorm.Model
 	Email     string
-	BirthInfo time.Time
 	Sign      string
 	Name      string
+	BirthInfo time.Time
 }

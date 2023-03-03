@@ -25,7 +25,6 @@ func main() {
 	usersDatabase.Add(ctx, model.User{
 		Name:      "artur",
 		Email:     "aa@gmail.ru",
-		Sign:      "taurus",
 		BirthInfo: time.Now(),
 	})
 	get, err := usersDatabase.Get(ctx, 1)

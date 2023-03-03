@@ -1,8 +1,10 @@
 package main
 
 import (
+	"astroService/internal/config"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -13,8 +15,12 @@ func main() {
 
 	req, _ := http.NewRequest("POST", url, nil)
 
-	req.Header.Add("X-RapidAPI-Key", "54208fc179msh16e7cc7ea2939dcp1eb840jsnde68a4a6c957")
-	req.Header.Add("X-RapidAPI-Host", "sameer-kumar-aztro-v1.p.rapidapi.com")
+	config, err := config.New()
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Add("X-RapidAPI-Key", config.ApiKey)
+	req.Header.Add("X-RapidAPI-Host", config.ApiHost)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -23,5 +29,5 @@ func main() {
 
 	fmt.Println(res)
 	fmt.Println(string(body))
-	
+
 }
