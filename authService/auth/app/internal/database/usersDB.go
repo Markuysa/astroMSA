@@ -1,15 +1,16 @@
 package database
 
 import (
+	"astroService/pkg/workers/astroWorker"
 	"authService/app/internal/model"
-	"authService/app/pkg/workers/astroWorker"
 	"context"
 	"errors"
 	"github.com/jmoiron/sqlx"
 )
 
 var (
-	addingUserError = errors.New("Error with addimg the user")
+	AddingUserError  = errors.New("Error with addimg the user")
+	GettingUserError = errors.New("Error with getting the user")
 )
 
 type UsersDB struct {
@@ -38,7 +39,7 @@ func (db *UsersDB) Add(ctx context.Context, user model.User) error {
 		user.Sign,
 		user.Name)
 	if err != nil {
-		return addingUserError
+		return AddingUserError
 	}
 	return nil
 }
@@ -57,7 +58,7 @@ func (db *UsersDB) Get(ctx context.Context, id int64) (*model.User, error) {
 	row := db.db.QueryRowxContext(ctx, query, id)
 	err := row.Scan(&user.Email, &user.BirthInfo, &user.Sign, &user.Name)
 	if err != nil {
-		return nil, err
+		return nil, GettingUserError
 	}
 	return &user, nil
 }

@@ -7,12 +7,14 @@ import (
 )
 
 type Config struct {
+	MessageSenderMail     string `yaml:"notificationsEmail"`
+	MessageSenderPassword string `yaml:"notificationsEmailPassword"`
 }
 
 var (
 	InitConfigError       = errors.New("error when init the config")
 	UnmarshallConfigError = errors.New("error when unmarshall the config")
-	configPath            = "data/config.yml"
+	configPath            = "app/data/config.yml"
 )
 
 func Init() (*Config, error) {

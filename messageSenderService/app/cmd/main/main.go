@@ -1,21 +1,26 @@
 package main
 
-import (
-	"fmt"
-	"gopkg.in/gomail.v2"
-)
+import "messageSenderService/app/internal/workers/cronWorker"
 
 func main() {
-	m := gomail.NewMessage()
-	m.SetHeader("From", "islam.kus0101@gmail.com")
-	m.SetHeader("To", "markuysa.study@mail.ru")
-	m.SetHeader("Subject", "Hello!")
-	m.SetBody("text/html", "Hello <b>Bob</b> and <i>Cora</i>!")
 
-	d := gomail.NewDialer("smtp.gmail.com", 587, "islam.kus0101@gmail.com", "srxoglfllxelogft")
+	//ctx := context.Background()
+	//messageConfig, err := config.Init()
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//messageWorker := messageSender.Init(messageConfig)
+	//
+	//err = messageWorker.SendDailyPredictions(ctx, []model.Receiver{
+	//	model.Receiver{Email: "islam.kus1111@gmail.com", Zodiac: "Leo"},
+	//	model.Receiver{Email: "islam.kus1111@gmail.com", Zodiac: "Leo"},
+	//	model.Receiver{Email: "islam.kus1111@gmail.com", Zodiac: "Leo"},
+	//	model.Receiver{Email: "islam.kus1111@gmail.com", Zodiac: "Leo"},
+	//	model.Receiver{Email: "markuysa.study@mail.ru", Zodiac: "Aries"}})
+	//if err != nil {
+	//	log.Print(err)
+	//}
 
-	// Send the email to Bob, Cora and Dan.
-	if err := d.DialAndSend(m); err != nil {
-		fmt.Println(err)
-	}
+	cron := cronWorker.Init()
+	cron.StartTicker()
 }

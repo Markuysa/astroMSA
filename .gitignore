@@ -1,2 +1,3 @@
 authService/auth/app/internal/data
-messageSenderService/app/internal/data
+messageSenderService/app/data
+astroService/app/data

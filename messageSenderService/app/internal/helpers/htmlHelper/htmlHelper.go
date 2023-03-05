@@ -1,7 +1,27 @@
-package htmlWorker
+package htmlHelper
 
+import (
+	"astroService/pkg/model"
+	"bytes"
+	"errors"
+	"html/template"
+)
 
-func GetHTMLMessage(filePath string)(string,error){
-	//Todo parse html file adding the values in doc {{some value}} etc.
-	return "", nil
+var (
+	ParseHTMLError   = errors.New("parse html error")
+	ExecuteHTMLError = errors.New("execute html error (watch the struct)")
+)
+
+func GetHTMLDailyPrediction(filePath string, prediction model.Prediction) (*bytes.Buffer, error) {
+
+	var body bytes.Buffer
+	t, err := template.ParseFiles(filePath)
+	if err != nil {
+		return nil, ParseHTMLError
+	}
+	err = t.Execute(&body, prediction)
+	if err != nil {
+		return nil, ExecuteHTMLError
+	}
+	return &body, nil
 }

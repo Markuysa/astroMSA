@@ -1,9 +1,9 @@
 package main
 
 import (
+	"astroService/pkg/constanses"
 	db "authService/app/internal/database"
 	"authService/app/internal/model"
-	"authService/app/pkg/constanses"
 	"context"
 	"fmt"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"

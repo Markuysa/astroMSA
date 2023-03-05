@@ -2,8 +2,13 @@ package astroWorker
 
 import (
 	"astroService/pkg/model"
+	"errors"
 	"github.com/hashicorp/go.net/context"
 	"github.com/irfansofyana/go-aztro-api-wrapper/aztro"
+)
+
+var (
+	FetchingPredictionError = errors.New("error with fetching the prediction")
 )
 
 type AstroFetcher interface {
@@ -20,5 +25,19 @@ func Init(client *aztro.AztroClient) *AstroWorker {
 }
 func (w *AstroWorker) FetchPrediction(ctx context.Context, sign aztro.Sign, day aztro.Day) (*model.Prediction, error) {
 
-	w.APIclient.GetHoroscope()
+	requestParams := aztro.NewAztroRequestParam(sign, aztro.WithDay(day))
+
+	response, err := w.APIclient.GetHoroscope(requestParams)
+	if err != nil {
+		return nil, FetchingPredictionError
+	}
+	return &model.Prediction{
+		Color:         response.Color,
+		Compatibility: response.Compatibility,
+		Description:   response.Description,
+		LuckyNumber:   response.LuckyNumber,
+		LuckyTime:     response.LuckyTime,
+		Mood:          response.Mood,
+	}, nil
+
 }
