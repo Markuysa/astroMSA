@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package protobuf;
+
+import "google/protobuf/timestamp.proto";
+//    gorm.Model
+//    Email     string
+//    Sign      string
+//    Name      string
+//    BirthInfo time.Time
+message User{
+  string Email = 1;
+  string Sign = 2;
+  string Name = 3;
+  google.protobuf.Timestamp BirthInfo = 4;
+  int64 ID = 5;
+  google.protobuf.Timestamp CreatedAt = 6;
+  google.protobuf.Timestamp UpdatedAt = 7;
+}
+

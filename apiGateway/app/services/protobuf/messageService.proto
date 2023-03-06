@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package protobuf;
+
+import "api/annotations.proto";
+import "google/protobuf/any.proto";
+service MessageService{
+  rpc SendDailyPredictions(DailyPredictionsRequest) returns (DailyPredictionsResponse){
+    option (google.api.http) = {
+      post: "/api/v1/sendPredictions";
+    };
+  }
+}
+message DailyPredictionsResponse{
+  google.protobuf.Any responseStatus = 1;
+}
+message Receiver{
+  string Zodiac = 1;
+  string Email  = 2;
+}
+
+message DailyPredictionsRequest{
+  repeated Receiver Receivers = 1;
+}

@@ -1,10 +1,10 @@
 package messageSender
 
 import (
+	"astroService/pkg/constanses"
 	"astroService/pkg/workers/astroWorker"
 	"fmt"
 	"github.com/hashicorp/go.net/context"
-	"github.com/irfansofyana/go-aztro-api-wrapper/aztro"
 	"gopkg.in/gomail.v2"
 	"messageSenderService/app/internal/config"
 	"messageSenderService/app/internal/helpers/htmlHelper"
@@ -45,16 +45,15 @@ func (s *MsgSenderWorker) SendHTML(ctx context.Context, message model.Message) e
 }
 
 func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, receivers []modelExternal.Receiver) error {
-
+	// FIX HERE
 	wg := sync.WaitGroup{}
 	bodyPath := "app/ui/Prediction.html"
-	client, _ := aztro.NewAztroClient()
-	work := astroWorker.Init(client)
+	var worker astroWorker.AstroWorker
 	for _, receiver := range receivers {
 		go func(receiver modelExternal.Receiver) {
 			wg.Add(1)
 			defer wg.Done()
-			prediction, _ := work.FetchPrediction(ctx, aztro.Aries, aztro.Today)
+			prediction, _ := worker.FetchPrediction(ctx, constanses.ARIES, "today")
 			body, err := htmlHelper.GetHTMLDailyPrediction(bodyPath, *prediction)
 
 			err = s.SendHTML(ctx, model.Message{

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package protobuf;
+
+import "apigw/services/google/api";
+
+service AstrologyService{
+  rpc GetPrediction(PredictionRequest) returns (PredictionResponse){
+
+  }
+}
+
+message PredictionRequest{
+  string Sign = 1;
+  string Day  = 2;
+}
+message PredictionResponse{
+  string DateRange     = 1;
+  string CurrentDate   = 2;
+  string Description   = 3;
+  string Compatibility = 4;
+  string Mood          = 5;
+  string Color         = 6;
+  string LuckyNumber   = 7;
+  string LuckyTime     = 8;
+}
+
+
+
