@@ -1,8 +1,8 @@
 syntax = "proto3";
 
 package protobuf;
-
-import "api/annotations.proto";
+option go_package = "apiGateway/app/services/protobuf";
+import "google/api/annotations.proto";
 import "google/protobuf/any.proto";
 service MessageService{
   rpc SendDailyPredictions(DailyPredictionsRequest) returns (DailyPredictionsResponse){

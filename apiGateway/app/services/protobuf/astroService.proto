@@ -2,11 +2,14 @@ syntax = "proto3";
 
 package protobuf;
 
-import "apigw/services/google/api";
+option go_package = "apiGateway/app/services/protobuf";
+import "google/api/annotations.proto";
 
 service AstrologyService{
   rpc GetPrediction(PredictionRequest) returns (PredictionResponse){
-
+    option (google.api.http) = {
+      post: "/api/v1/getPrediction";
+    };
   }
 }
 
