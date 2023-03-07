@@ -1,4 +1,4 @@
-authService/auth/app/internal/data
+authService/app/internal/data
 messageSenderService/app/data
 astroService/app/data
 messageSenderService/app/ui

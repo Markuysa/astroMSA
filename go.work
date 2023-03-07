@@ -1,5 +1,5 @@
 go 1.19
-use ./authService/auth
-use astroService/app
+use authService
+use astroService
 use messageSenderService
-use apiGateway/app
+use apiGateway

@@ -2,7 +2,7 @@ FROM golang:alpine AS builder
 
 WORKDIR /app
 
-COPY . .
+COPY auth .
 
 RUN go build -o auth main.go
 

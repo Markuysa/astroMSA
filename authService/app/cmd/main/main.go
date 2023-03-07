@@ -1,37 +1,46 @@
 package main
 
 import (
-	"astroService/pkg/constanses"
+	"authService/app/gapi"
+	"authService/app/internal/config"
 	db "authService/app/internal/database"
-	"authService/app/internal/model"
+	"authService/app/protobuf/pb"
 	"context"
-	"fmt"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	"github.com/jmoiron/sqlx"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"log"
-	"time"
+	"net"
 )
 
-func main() {
-	ctx := context.Background()
-	datab, err := sqlx.ConnectContext(ctx,
-		"postgres",
-		"host=localhost port=5432 user=postgres password=islam20011 sslmode=disable")
+func runGRPC(db *db.UsersDB, config *config.Config, port string) {
+	grpcServer := grpc.NewServer()
+	authServer := gapi.NewServer(config, db, port)
+	pb.RegisterAuthServiceServer(grpcServer, authServer)
+	reflection.Register(grpcServer)
+
+	listener, err := net.Listen("tcp", authServer.Port)
+	log.Println(listener)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Starting grpc server at:", authServer.Port+" port")
+
+	err = grpcServer.Serve(listener)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	usersDatabase := db.New(datab)
-	usersDatabase.Add(ctx, model.User{
-		Name:      "artur",
-		Email:     "aa@gmail.ru",
-		BirthInfo: time.Now(),
-	})
-	get, err := usersDatabase.Get(ctx, 1)
+}
+func main() {
+
+	//Change: port to be defined from docker cmpse
+	ctx := context.Background()
+	usersDatabase := db.New(ctx)
+	config, err := config.New()
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(get)
-	fmt.Println(constanses.AriesStartDate)
+	runGRPC(usersDatabase, config, ":9091")
 
 }

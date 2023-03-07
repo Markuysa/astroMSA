@@ -1,8 +1,8 @@
 package messageSender
 
 import (
-	"astroService/pkg/constanses"
-	"astroService/pkg/workers/astroWorker"
+	"astroService/app/pkg/constanses"
+	"astroService/app/pkg/workers/astroWorker"
 	"fmt"
 	"github.com/hashicorp/go.net/context"
 	"gopkg.in/gomail.v2"
@@ -45,7 +45,7 @@ func (s *MsgSenderWorker) SendHTML(ctx context.Context, message model.Message) e
 }
 
 func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, receivers []modelExternal.Receiver) error {
-	// FIX HERE
+	// FIX HERE astroworker
 	wg := sync.WaitGroup{}
 	bodyPath := "app/ui/Prediction.html"
 	var worker astroWorker.AstroWorker

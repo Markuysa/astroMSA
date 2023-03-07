@@ -1,11 +1,12 @@
 package database
 
 import (
-	"astroService/pkg/workers/astroWorker"
+	"astroService/app/pkg/workers/astroWorker"
 	"authService/app/internal/model"
 	"context"
 	"errors"
 	"github.com/jmoiron/sqlx"
+	"log"
 )
 
 var (
@@ -17,8 +18,14 @@ type UsersDB struct {
 	db *sqlx.DB
 }
 
-func New(db *sqlx.DB) *UsersDB {
-	return &UsersDB{db: db}
+func New(ctx context.Context) *UsersDB {
+	datab, err := sqlx.ConnectContext(ctx,
+		"postgres",
+		"host=localhost port=5432 user=postgres password=islam20011 sslmode=disable")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &UsersDB{db: datab}
 }
 
 func (db *UsersDB) Add(ctx context.Context, user model.User) error {
