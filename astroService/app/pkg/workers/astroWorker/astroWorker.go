@@ -1,8 +1,8 @@
 package astroWorker
 
 import (
-	"astroService/internal/config"
-	"astroService/pkg/model"
+	"astroService/app/internal/config"
+	"astroService/app/pkg/model"
 	"encoding/json"
 	"errors"
 	"fmt"

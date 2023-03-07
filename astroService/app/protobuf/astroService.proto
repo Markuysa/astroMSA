@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package protobuf;
 
-option go_package = "apiGateway/app/services/protobuf";
+option go_package = "/pb";
 import "google/api/annotations.proto";
 
 service AstrologyService{
