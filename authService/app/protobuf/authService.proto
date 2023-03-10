@@ -8,13 +8,13 @@ import "google/protobuf/timestamp.proto";
 service AuthService{
   rpc GetUser(GetUserRequest) returns (GetUserResponse){
     option (google.api.http) = {
-      post: "/api/v1/users/get";
+        post: "/api/v1/users/get/{id}";
     };
   };
 }
 
 message GetUserRequest{
-  string Email = 1;
+  int64 id = 1;
 }
 message GetUserResponse{
   User user = 1;
@@ -23,7 +23,7 @@ message User{
   string Email = 1;
   string Sign = 2;
   string Name = 3;
-  int64 ID = 5;
+  uint64 ID = 5;
   google.protobuf.Timestamp BirthInfo = 4;
   google.protobuf.Timestamp CreatedAt = 6;
   google.protobuf.Timestamp UpdatedAt = 7;

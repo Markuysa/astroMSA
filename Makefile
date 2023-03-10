@@ -4,7 +4,7 @@ protogateway:
         --go-grpc_out=apiGateway/app/services/pb --go-grpc_opt=paths=source_relative \
         --grpc-gateway_out=apiGateway/app/services/pb --grpc-gateway_opt=paths=source_relative \
          messageSenderService/app/protobuf/*.proto
-	protoc --proto_path=authService/auth/app/protobuf --go_out=apiGateway/app/services/pb --go_opt=paths=source_relative \
+	protoc --proto_path=authService/app/protobuf --go_out=apiGateway/app/services/pb --go_opt=paths=source_relative \
             --go-grpc_out=apiGateway/app/services/pb --go-grpc_opt=paths=source_relative \
             --grpc-gateway_out=apiGateway/app/services/pb --grpc-gateway_opt=paths=source_relative \
              authService/app/protobuf/*.proto
@@ -27,4 +27,10 @@ protoAuth:
 			   --go-grpc_out=authService/app/protobuf/pb --go-grpc_opt=paths=source_relative \
 			   --grpc-gateway_out=authService/app/protobuf/pb --grpc-gateway_opt=paths=source_relative \
 				authService/app/protobuf/*.proto
+prod:
+	go run astroService/app/cmd/main/main.go
+	go run authService/app/cmd/main/main.go
+	go run messageService/app/cmd/main/main.go
+
 PHONY proto protoAstro protoMessages protoAuth:
+

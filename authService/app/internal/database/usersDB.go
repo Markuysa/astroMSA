@@ -2,6 +2,7 @@ package database
 
 import (
 	"astroService/app/pkg/workers/astroWorker"
+	"authService/app/internal/helpers/hash"
 	"authService/app/internal/model"
 	"context"
 	"errors"
@@ -10,8 +11,10 @@ import (
 )
 
 var (
-	AddingUserError  = errors.New("Error with addimg the user")
-	GettingUserError = errors.New("Error with getting the user")
+	AddingUserErr        = errors.New("error with adding the user")
+	GettingUserErr       = errors.New("error with getting the user")
+	UserAlreadyExistsErr = errors.New("user already exists")
+	PasswordHashErr      = errors.New("password hash err")
 )
 
 type UsersDB struct {
@@ -29,24 +32,36 @@ func New(ctx context.Context) *UsersDB {
 }
 
 func (db *UsersDB) Add(ctx context.Context, user model.User) error {
+	if _, err := db.Get(ctx, int64(user.ID)); err == nil {
+		return UserAlreadyExistsErr
+	}
+	password, err := hash.HashPassword(user.Password)
+	if err != nil {
+		return PasswordHashErr
+	}
 	query := `
 	insert into users(
 	    email,
 	    birth_info,
 	    sign,
-		name
+		name,
+		password,
+	    created_at
 	)values (
-	    $1,$2,$3,$4  
+	    $1,$2,$3,$4,$5,$6 
 	)
 	`
 	user.Sign = astroWorker.CalculateSign(user.BirthInfo)
-	_, err := db.db.ExecContext(ctx, query,
+	_, err = db.db.ExecContext(ctx, query,
 		user.Email,
 		user.BirthInfo,
 		user.Sign,
-		user.Name)
+		user.Name,
+		password,
+		user.CreatedAt,
+	)
 	if err != nil {
-		return AddingUserError
+		return AddingUserErr
 	}
 	return nil
 }
@@ -57,15 +72,18 @@ func (db *UsersDB) Get(ctx context.Context, id int64) (*model.User, error) {
 		select email,
 			   birth_info,
 			   sign,
-			   name
+			   name,
+			   password,
+			   created_at
 		from users
 		where id=$1
 	`
+
 	var user model.User
 	row := db.db.QueryRowxContext(ctx, query, id)
-	err := row.Scan(&user.Email, &user.BirthInfo, &user.Sign, &user.Name)
+	err := row.Scan(&user.Email, &user.BirthInfo, &user.Sign, &user.Name, &user.Password, &user.CreatedAt)
 	if err != nil {
-		return nil, GettingUserError
+		return nil, GettingUserErr
 	}
 	return &user, nil
 }

@@ -8,7 +8,7 @@ import "google/api/annotations.proto";
 service AstrologyService{
   rpc GetPrediction(PredictionRequest) returns (PredictionResponse){
     option (google.api.http) = {
-      post: "/api/v1/getPrediction";
+          post: "/api/v1/getPrediction";
     };
   }
 }

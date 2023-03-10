@@ -2,10 +2,11 @@
 -- +goose StatementBegin
 create table users
 (
+    id         bigserial,
     email      text,
     sign       text,
     name       text,
-    id         bigserial,
+    password text,
     created_at timestamp,
     updated_at timestamp,
     birth_info timestamp,

@@ -10,7 +10,5 @@ FROM alpine
 
 WORKDIR /app
 
-
 COPY --from=builder /app/auth /app/auth
 
-CMD [". /hello"]

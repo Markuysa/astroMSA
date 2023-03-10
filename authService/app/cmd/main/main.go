@@ -6,7 +6,6 @@ import (
 	db "authService/app/internal/database"
 	"authService/app/protobuf/pb"
 	"context"
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
