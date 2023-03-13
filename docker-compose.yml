@@ -7,15 +7,26 @@ services:
       dockerfile: Dockerfile
     restart: always
     working_dir: /app
-    volumes:
-      - ./astroService:/app
-    ports:
-      - ${ASTRO_PORT_LOCAL}:${ASTRO_PORT}
-    environment:
-      - APP_MODE=${APP_MODE}
-      - HOST=${ASTRO_HOST}
-      - PORT=${ASTRO_PORT}
-      - PORT_LOCAL=${ASTRO_PORT_LOCAL}
+  auth:
+    container_name: astroAuth
+    build:
+      context: ./authService
+      dockerfile: Dockerfile
+    restart: always
+    working_dir: /app
+    depends_on:
+      - postgres
+  messages:
+    container_name: messagesSender
+    build:
+      context: ./messageSenderService
+      dockerfile: Dockerfile
+    restart: always
+    working_dir: /app
+  postgres:
+    image: postgres
+
+
 
 
 

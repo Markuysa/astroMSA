@@ -1,12 +1,14 @@
 package gapi
 
 import (
-	"apigw/app/services/pb"
 	"authService/app/internal/config"
 	"authService/app/internal/database"
 	db "authService/app/internal/database"
+	"authService/app/protobuf/pb"
+	//"apigw/app/services/pb"
 	"context"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type Server struct {
@@ -22,29 +24,29 @@ func NewServer(config *config.Config, usersDB *database.UsersDB, port string) *S
 		UsersDB: usersDB,
 		Port:    port,
 	}
-
 }
+
 func (s *Server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error) {
 	user, err := s.UsersDB.Get(ctx, req.GetId())
 	if err != nil {
 		return nil, err
 	}
 	return &pb.GetUserResponse{User: &pb.User{
-		Email: user.Email,
-		Sign:  user.Sign,
-		Name:  user.Name,
-		ID:    uint64(int64(user.ID)),
-		//BirthInfo: user.BirthInfo,
-		//CreatedAt: user.CreatedAt,
+		Email:     user.Email,
+		Sign:      user.Sign,
+		Name:      user.Name,
+		ID:        uint64(int64(user.ID)),
+		BirthInfo: timestamppb.New(user.BirthInfo),
+		CreatedAt: timestamppb.New(user.CreatedAt),
 	}}, nil
 }
 
 func NewServerGateway() (*Server, error) {
 	ctx := context.Background()
 	usersDatabase := db.New(ctx)
-	config, err := config.New()
+	conf, err := config.New()
 	if err != nil {
 		return nil, nil
 	}
-	return NewServer(config, usersDatabase, ":9090"), nil
+	return NewServer(conf, usersDatabase, ":9090"), nil
 }

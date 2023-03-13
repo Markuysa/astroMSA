@@ -2,22 +2,19 @@ package main
 
 import (
 	protobuf "apigw/app/services/pb"
-	"authService/app/gapi"
 	"context"
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/reflection"
 	"log"
-	"net"
 	"net/http"
 )
 
 var (
-	authService = ":9000"
-	//messageService = ":9001"
-	astroService = ":9002"
+	authService    = ":9000"
+	messageService = ":9001"
+	astroService   = ":9002"
 )
 
 func HTTPProxy(proxyaddr string) {
@@ -43,21 +40,21 @@ func HTTPProxy(proxyaddr string) {
 		log.Fatalln("Filed to start HTTP server", err)
 	}
 	//Connecting to message service
-	//grpcMessagesConn, err := grpc.Dial(
-	//	messageService,
-	//	//grpc.WithPerRPCCredentials(&reqData{}),
-	//	grpc.WithTransportCredentials(insecure.NewCredentials()),
-	//)
-	//if err != nil {
-	//	log.Fatalln("Filed to connect to Messages sender service", err)
-	//}
-	//defer grpcMessagesConn.Close()
-	//
-	//err = protobuf.RegisterMessageServiceHandlerClient(
-	//	context.Background(),
-	//	grpcGwMux,
-	//	grpcMessagesConn,
-	//)
+	grpcMessagesConn, err := grpc.Dial(
+		messageService,
+		//grpc.WithPerRPCCredentials(&reqData{}),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
+	if err != nil {
+		log.Fatalln("Filed to connect to Messages sender service", err)
+	}
+	defer grpcMessagesConn.Close()
+
+	err = protobuf.RegisterMessageServiceHandler(
+		context.Background(),
+		grpcGwMux,
+		grpcMessagesConn,
+	)
 	if err != nil {
 		log.Fatalln("Filed to start HTTP server", err)
 	}
@@ -84,67 +81,63 @@ func HTTPProxy(proxyaddr string) {
 	mux := http.NewServeMux()
 
 	mux.Handle("/api/v1/", grpcGwMux)
-	mux.HandleFunc("/", helloWorld)
 
 	fmt.Println("starting HTTP server at " + proxyaddr)
 	log.Fatal(http.ListenAndServe(proxyaddr, mux))
 }
-func helloWorld(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello")
-}
 
-func runGatewayServer() {
-	authServer, err := gapi.NewServerGateway()
-	if err != nil {
-		log.Fatal(err)
-	}
-	grpcMux := runtime.NewServeMux()
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	err = protobuf.RegisterAuthServiceHandlerServer(ctx, grpcMux, authServer)
-	if err != nil {
-		log.Fatal(err)
-	}
-	mux := http.NewServeMux()
-	mux.Handle("/", grpcMux)
-	listener, err := net.Listen("tcp", ":8080")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	log.Println("starting http gateway")
-	err = http.Serve(listener, mux)
-	if err != nil {
-		log.Fatalln(err)
-	}
-}
-
-func runGrpcServer() {
-	server, err := gapi.NewServerGateway()
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	grpcServer := grpc.NewServer()
-	protobuf.RegisterAuthServiceServer(grpcServer, server)
-	reflection.Register(grpcServer)
-
-	listener, err := net.Listen("tcp", ":9096")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	log.Println("starting grpc")
-	err = grpcServer.Serve(listener)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-}
+//	func runGatewayServer() {
+//		authServer, err := gapi.NewServerGateway()
+//		if err != nil {
+//			log.Fatal(err)
+//		}
+//		grpcMux := runtime.NewServeMux()
+//
+//		ctx, cancel := context.WithCancel(context.Background())
+//		defer cancel()
+//		err = protobuf.RegisterAuthServiceHandlerServer(ctx, grpcMux, authServer)
+//		if err != nil {
+//			log.Fatal(err)
+//		}
+//		mux := http.NewServeMux()
+//		mux.Handle("/", grpcMux)
+//		listener, err := net.Listen("tcp", ":8080")
+//		if err != nil {
+//			log.Fatalln(err)
+//		}
+//
+//		log.Println("starting http gateway")
+//		err = http.Serve(listener, mux)
+//		if err != nil {
+//			log.Fatalln(err)
+//		}
+//	}
+//
+//	func runGrpcServer() {
+//		server, err := gapi.NewServerGateway()
+//		if err != nil {
+//			log.Fatalln(err)
+//		}
+//
+//		grpcServer := grpc.NewServer()
+//		protobuf.RegisterAuthServiceServer(grpcServer, server)
+//		reflection.Register(grpcServer)
+//
+//		listener, err := net.Listen("tcp", ":9096")
+//		if err != nil {
+//			log.Fatalln(err)
+//		}
+//
+//		log.Println("starting grpc")
+//		err = grpcServer.Serve(listener)
+//		if err != nil {
+//			log.Fatalln(err)
+//		}
+//
+// }
 func main() {
-	//HTTPProxy(":8080")
-	go runGrpcServer()
-	runGatewayServer()
+	HTTPProxy(":8080")
+	//go runGrpcServer()
+	//runGatewayServer()
 
 }
