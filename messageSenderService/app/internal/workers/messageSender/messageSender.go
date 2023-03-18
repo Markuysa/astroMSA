@@ -1,10 +1,10 @@
 package messageSender
 
 import (
-	"astroService/app/pkg/constanses"
-	"astroService/app/pkg/workers/astroWorker"
+	"context"
 	"fmt"
-	"github.com/hashicorp/go.net/context"
+	"github.com/Markuysa/astroMSA/astroService/app/pkg/constanses"
+	"github.com/Markuysa/astroMSA/astroService/app/pkg/workers/astroWorker"
 	"gopkg.in/gomail.v2"
 	"messageSenderService/app/internal/config"
 	"messageSenderService/app/internal/helpers/htmlHelper"
