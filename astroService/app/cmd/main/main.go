@@ -1,14 +1,14 @@
 package main
 
 import (
-	"astroService/app/gapi"
-	pb "astroService/app/protobuf/pb"
+	"github.com/Markuysa/astroMSA/astroService/app/gapi"
+	pb "github.com/Markuysa/astroMSA/astroService/app/protobuf/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
 	//"astroService/gapi"
-	config2 "astroService/app/internal/config"
-	"astroService/app/pkg/workers/astroWorker"
+	config2 "github.com/Markuysa/astroMSA/astroService/app/internal/config"
+	"github.com/Markuysa/astroMSA/astroService/app/pkg/workers/astroWorker"
 	//pb "astroService/protobuf"
 	"github.com/valyala/fasthttp"
 	//"google.golang.org/grpc/reflection"
@@ -23,9 +23,7 @@ func runGRPC(worker *astroWorker.AstroWorker) {
 	pb.RegisterAstrologyServiceServer(grpcServer, astroServer)
 	reflection.Register(grpcServer)
 
-	log.Println(astroServer)
 	listener, err := net.Listen("tcp", astroServer.Port)
-	log.Println(listener)
 	if err != nil {
 		log.Fatal(err)
 	}

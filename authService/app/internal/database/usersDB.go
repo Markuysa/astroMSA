@@ -1,7 +1,7 @@
 package database
 
 import (
-	"astroService/app/pkg/workers/astroWorker"
+	//"astroService/app/pkg/workers/astroWorker"
 	"authService/app/internal/helpers/hash"
 	"authService/app/internal/model"
 	"context"
@@ -51,7 +51,7 @@ func (db *UsersDB) Add(ctx context.Context, user model.User) error {
 	    $1,$2,$3,$4,$5,$6 
 	)
 	`
-	user.Sign = astroWorker.CalculateSign(user.BirthInfo)
+	//user.Sign = astroWorker.CalculateSign(user.BirthInfo)
 	_, err = db.db.ExecContext(ctx, query,
 		user.Email,
 		user.BirthInfo,

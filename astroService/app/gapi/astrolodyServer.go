@@ -1,8 +1,8 @@
 package gapi
 
 import (
-	"astroService/app/pkg/workers/astroWorker"
-	pb "astroService/app/protobuf/pb"
+	"github.com/Markuysa/astroMSA/astroService/app/pkg/workers/astroWorker"
+	pb "github.com/Markuysa/astroMSA/astroService/app/protobuf/pb"
 )
 
 type Server struct {

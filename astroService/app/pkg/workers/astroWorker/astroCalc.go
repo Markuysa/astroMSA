@@ -1,7 +1,7 @@
 package astroWorker
 
 import (
-	"astroService/app/pkg/constanses"
+	"github.com/Markuysa/astroMSA/astroService/app/pkg/constanses"
 	"time"
 )
 

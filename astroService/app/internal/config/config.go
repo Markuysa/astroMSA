@@ -13,7 +13,7 @@ type Config struct {
 	ApiHost string `yaml:"apiHost"`
 }
 
-var configFilePath = "data/config.yml"
+var configFilePath = "app/internal/data/config.yml"
 var (
 	configReadError  = errors.New("Error of reading config file")
 	configParseError = errors.New("Error of parsing config file")

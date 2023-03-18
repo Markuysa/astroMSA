@@ -1,5 +1,5 @@
 authService/app/internal/data
 messageSenderService/app/data
-astroService/app/data
+astroService/app/internal/data
 messageSenderService/app/ui
 

@@ -1,4 +1,4 @@
-module astroService
+module github.com/Markuysa/astroMSA/astroService
 
 go 1.19
 
