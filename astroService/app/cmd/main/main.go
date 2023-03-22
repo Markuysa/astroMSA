@@ -5,16 +5,15 @@ import (
 	pb "github.com/Markuysa/astroMSA/astroService/app/protobuf/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"net/http"
 
 	//"astroService/gapi"
 	config2 "github.com/Markuysa/astroMSA/astroService/app/internal/config"
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/workers/astroWorker"
-	//pb "astroService/protobuf"
-	"github.com/valyala/fasthttp"
+
 	//"google.golang.org/grpc/reflection"
 	"log"
 	"net"
-	"time"
 )
 
 func runGRPC(worker *astroWorker.AstroWorker) {
@@ -43,8 +42,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	client := fasthttp.Client{ReadTimeout: 5 * time.Second}
-	astrologyWorker := astroWorker.Init(config, &client)
+	astrologyWorker := astroWorker.Init(config, &http.Client{})
 
 	runGRPC(astrologyWorker)
 	if err != nil {

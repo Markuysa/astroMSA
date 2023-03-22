@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/Markuysa/astroMSA/astroService/app/internal/config"
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/model"
-	"github.com/valyala/fasthttp"
 	"io/ioutil"
 	"net/http"
 )
@@ -21,10 +20,10 @@ type AstroFetcher interface {
 }
 type AstroWorker struct {
 	config     *config.Config
-	httpClient *fasthttp.Client
+	httpClient *http.Client
 }
 
-func Init(config *config.Config, client *fasthttp.Client) *AstroWorker {
+func Init(config *config.Config, client *http.Client) *AstroWorker {
 	return &AstroWorker{
 		config:     config,
 		httpClient: client,
