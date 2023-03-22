@@ -13,8 +13,8 @@ import (
 
 var (
 	authService    = ":9000"
-	messageService = ":9001"
-	astroService   = ":9002"
+	messageService = ":9002"
+	astroService   = ":9090"
 )
 
 func HTTPProxy(proxyaddr string) {

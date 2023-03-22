@@ -1,3 +1,5 @@
+github.com/Markuysa/astroMSA/astroService v0.0.0-20230318164414-8e1ded19a503 h1:JcrEbwv6HJV7gstX6cXflzFD6UAe9J00DRnxQIK/Nd0=
+github.com/Markuysa/astroMSA/astroService v0.0.0-20230318164414-8e1ded19a503/go.mod h1:oc38bVQVCt6b1p35yIgXSuOJPB/3d7w2x8PHb+z0dSA=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/golang/glog v1.0.0 h1:nfP3RFugxnNRyKgeWd4oI1nYvXpxrx8ck8ZrcizshdQ=
 github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaSAoJOfIk=

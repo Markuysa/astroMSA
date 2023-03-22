@@ -1,9 +1,9 @@
 package htmlHelper
 
 import (
-	"astroService/app/pkg/model"
 	"bytes"
 	"errors"
+	"github.com/Markuysa/astroMSA/astroService/app/pkg/model"
 	"html/template"
 )
 

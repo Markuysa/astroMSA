@@ -1,12 +1,12 @@
 package astroWorker
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/Markuysa/astroMSA/astroService/app/internal/config"
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/model"
-	"github.com/hashicorp/go.net/context"
 	"github.com/valyala/fasthttp"
 	"io/ioutil"
 	"net/http"

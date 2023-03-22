@@ -27,10 +27,11 @@ protoAuth:
 			   --go-grpc_out=authService/app/protobuf/pb --go-grpc_opt=paths=source_relative \
 			   --grpc-gateway_out=authService/app/protobuf/pb --grpc-gateway_opt=paths=source_relative \
 				authService/app/protobuf/*.proto
-prod:
-	go run astroService/app/cmd/main/main.go
-	go run authService/app/cmd/main/main.go
-	go run messageService/app/cmd/main/main.go
+build:
+	go build -o astroService/main.exe astroService/app/cmd/main/main.go
+	go build -o authService/main.exe authService/app/cmd/main/main.go
+	go build -o messageSenderService/main.exe messageSenderService/app/cmd/main/main.go
 
-PHONY proto protoAstro protoMessages protoAuth:
+
+PHONY proto protoAstro protoMessages protoAuth exec:
 

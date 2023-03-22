@@ -12,6 +12,7 @@ require (
 )
 
 require (
+	github.com/Markuysa/astroMSA/astroService v0.0.0-20230318164414-8e1ded19a503 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	golang.org/x/net v0.7.0 // indirect

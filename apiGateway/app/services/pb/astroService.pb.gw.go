@@ -73,7 +73,7 @@ func local_request_AstrologyService_GetPrediction_0(ctx context.Context, marshal
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterAstrologyServiceHandlerFromEndpoint instead.
 func RegisterAstrologyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server AstrologyServiceServer) error {
 
-	mux.Handle("POST", pattern_AstrologyService_GetPrediction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_AstrologyService_GetPrediction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -139,7 +139,7 @@ func RegisterAstrologyServiceHandler(ctx context.Context, mux *runtime.ServeMux,
 // "AstrologyServiceClient" to call the correct interceptors.
 func RegisterAstrologyServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client AstrologyServiceClient) error {
 
-	mux.Handle("POST", pattern_AstrologyService_GetPrediction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_AstrologyService_GetPrediction_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)

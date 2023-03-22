@@ -14,7 +14,7 @@ type Config struct {
 var (
 	InitConfigError       = errors.New("error when init the config")
 	UnmarshallConfigError = errors.New("error when unmarshall the config")
-	configPath            = "app/data/config.yml"
+	configPath            = "app/internal/data/config.yml"
 )
 
 func Init() (*Config, error) {
