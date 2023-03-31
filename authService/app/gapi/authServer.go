@@ -4,11 +4,12 @@ import (
 	"authService/app/internal/config"
 	"authService/app/internal/database"
 	db "authService/app/internal/database"
+	"authService/app/internal/helpers/protobuf"
 	"authService/app/protobuf/pb"
-	//"apigw/app/services/pb"
 	"context"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"log"
 )
 
 type Server struct {
@@ -27,6 +28,7 @@ func NewServer(config *config.Config, usersDB *database.UsersDB, port string) *S
 }
 
 func (s *Server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error) {
+	log.Println(s.UsersDB.GetUsersEmailsWithAllowedNotifications(ctx))
 	user, err := s.UsersDB.Get(ctx, req.GetId())
 	if err != nil {
 		return nil, err
@@ -36,11 +38,13 @@ func (s *Server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUs
 		Sign:      user.Sign,
 		Name:      user.Name,
 		ID:        uint64(int64(user.ID)),
-		BirthInfo: timestamppb.New(user.BirthInfo),
+		BirthInfo: protobuf.DateToProtobuf(user.BirthInfo),
 		CreatedAt: timestamppb.New(user.CreatedAt),
 	}}, nil
 }
+func (s *Server) AddUser(ctx context.Context, req *pb.AddUserRequest) (*pb.AddUserResponse, error) {
 
+}
 func NewServerGateway() (*Server, error) {
 	ctx := context.Background()
 	usersDatabase := db.New(ctx)

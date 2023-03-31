@@ -1,20 +1,21 @@
-FROM golang:alpine AS builder
-#прикол в том, что я просто сбилдил бинарь, его нужно еще запустить!
-WORKDIR /app
+FROM golang:1.19.3-alpine AS builder
+
+WORKDIR /appdir
 
 COPY go.mod ./
 COPY go.sum ./
 RUN go mod download
-
 COPY . ./
 
 RUN go build -o main app/cmd/main/main.go
 
 FROM alpine
 
-WORKDIR /app
+WORKDIR /appdir
 
-COPY --from=builder /app/main .
+COPY --from=builder /app .
 
 EXPOSE 9000
+
+CMD ["/app/main"]
 

@@ -2,7 +2,9 @@ package main
 
 import (
 	"github.com/Markuysa/astroMSA/astroService/app/gapi"
+	"github.com/Markuysa/astroMSA/astroService/app/internal/logger"
 	pb "github.com/Markuysa/astroMSA/astroService/app/protobuf/pb"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"net/http"
@@ -16,9 +18,9 @@ import (
 	"net"
 )
 
-func runGRPC(worker *astroWorker.AstroWorker) {
+func runGRPC(worker *astroWorker.AstroWorker, logger *zap.Logger) {
 	grpcServer := grpc.NewServer()
-	astroServer := gapi.NewServer(worker)
+	astroServer := gapi.NewServer(worker, logger)
 	pb.RegisterAstrologyServiceServer(grpcServer, astroServer)
 	reflection.Register(grpcServer)
 
@@ -26,7 +28,7 @@ func runGRPC(worker *astroWorker.AstroWorker) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Starting grpc server at:", astroServer.Port+" port")
+	logger.Info("Starting grpc server at:", zap.String("port", astroServer.Port))
 
 	err = grpcServer.Serve(listener)
 	if err != nil {
@@ -39,12 +41,18 @@ func main() {
 
 	//ctx := context.Background()
 	config, err := config2.New()
+
+	if err != nil {
+		log.Println("WARINni")
+		//log.Fatal(err)
+	}
+	logger, err := logger.InitLogger()
 	if err != nil {
 		log.Fatal(err)
 	}
 	astrologyWorker := astroWorker.Init(config, &http.Client{})
 
-	runGRPC(astrologyWorker)
+	runGRPC(astrologyWorker, logger)
 	if err != nil {
 		return
 	}

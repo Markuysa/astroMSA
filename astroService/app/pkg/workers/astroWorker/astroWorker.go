@@ -8,6 +8,7 @@ import (
 	"github.com/Markuysa/astroMSA/astroService/app/internal/config"
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/model"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -64,7 +65,7 @@ func (w *AstroWorker) FetchPrediction(ctx context.Context, sign string, day stri
 	//
 	//return &prediction, nil
 	url := "https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=%s&day=%s"
-
+	log.Println(sign, day)
 	url = fmt.Sprintf(url, sign, day)
 
 	req, _ := http.NewRequest("POST", url, nil)
@@ -72,8 +73,9 @@ func (w *AstroWorker) FetchPrediction(ctx context.Context, sign string, day stri
 	req.Header.Add("X-RapidAPI-Key", w.config.ApiKey)
 	req.Header.Add("X-RapidAPI-Host", w.config.ApiHost)
 
+	log.Println(req)
 	res, _ := http.DefaultClient.Do(req)
-
+	log.Print(res)
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 

@@ -1,10 +1,10 @@
 package cache
 
 import (
+	"context"
 	"errors"
 	"github.com/go-redis/cache/v8"
 	"github.com/go-redis/redis/v8"
-	"github.com/hashicorp/go.net/context"
 	"time"
 )
 

@@ -2,10 +2,9 @@ package config
 
 import (
 	"errors"
+	"gopkg.in/yaml.v3"
 	"log"
 	"os"
-
-	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
@@ -24,7 +23,8 @@ func New() (*Config, error) {
 	rawYml, err := os.ReadFile(configFilePath)
 
 	if err != nil {
-		return nil, configReadError
+		return nil, err
+		//return nil, configReadError
 	}
 	var config Config
 	err = yaml.Unmarshal(rawYml, &config)

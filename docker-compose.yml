@@ -1,33 +1,52 @@
 version: '3.1'
 services:
+  gatweay:
+    container_name: astroGateway
+    build: ./apiGateway
+    restart: always
+    expose:
+      - "8085:8085"
+    depends_on:
+      - astro
+      - messages
+      - auth
   astro:
-    container_name: astro_predictions
+    container_name: astrologyService
     build:
       context: ./astroService
       dockerfile: Dockerfile
     restart: always
     working_dir: /app
-  auth:
-    container_name: astroAuth
-    build:
-      context: ./authService
-      dockerfile: Dockerfile
-    restart: always
-    working_dir: /app
-    depends_on:
-      - postgres
+    expose:
+      - "9090:9090"
+    volumes:
+      - ./astroService/app/internal/data/config.yml:/app/internal/data/config.yml
   messages:
-    container_name: messagesSender
-    build:
-      context: ./messageSenderService
-      dockerfile: Dockerfile
+    container_name: messagesSenderService
+    build: ./messageSenderService
     restart: always
     working_dir: /app
-  postgres:
+    expose:
+      - "9002:9002"
+  auth:
+    container_name: authAstroService
+    build: ./authService/app
+    restart: always
+    working_dir: /app
+    expose:
+      - "9000:9000"
+    depends_on:
+      - usersDB
+  usersDB:
     image: postgres
-
-
-
-
-
-
+    environment:
+      - POSTGRES_PASSWORD=islam20011
+      - POSTGRES_DB=usersDB
+      - POSTGRES_USER=postgres
+    expose:
+      - "5432"
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:

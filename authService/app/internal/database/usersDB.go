@@ -1,11 +1,11 @@
 package database
 
 import (
-	//"astroService/app/pkg/workers/astroWorker"
 	"authService/app/internal/helpers/hash"
 	"authService/app/internal/model"
 	"context"
 	"errors"
+	"github.com/Markuysa/astroMSA/astroService/app/pkg/workers/astroWorker"
 	"github.com/jmoiron/sqlx"
 	"log"
 )
@@ -22,9 +22,11 @@ type UsersDB struct {
 }
 
 func New(ctx context.Context) *UsersDB {
+
 	datab, err := sqlx.ConnectContext(ctx,
 		"postgres",
 		"host=localhost port=5432 user=postgres password=islam20011 sslmode=disable")
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -51,7 +53,7 @@ func (db *UsersDB) Add(ctx context.Context, user model.User) error {
 	    $1,$2,$3,$4,$5,$6 
 	)
 	`
-	//user.Sign = astroWorker.CalculateSign(user.BirthInfo)
+	user.Sign = astroWorker.CalculateSign(user.BirthInfo)
 	_, err = db.db.ExecContext(ctx, query,
 		user.Email,
 		user.BirthInfo,
@@ -86,4 +88,26 @@ func (db *UsersDB) Get(ctx context.Context, id int64) (*model.User, error) {
 		return nil, GettingUserErr
 	}
 	return &user, nil
+}
+
+func (db *UsersDB) GetUsersEmailsWithAllowedNotifications(ctx context.Context) ([]string, error) {
+
+	query := `
+		select email
+		from users
+		where notifications=true
+	`
+	var users []string
+
+	rows, err := db.db.QueryContext(ctx, query)
+	log.Println(rows)
+	if err != nil {
+		return nil, err
+	}
+	err = rows.Scan(&users)
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }
