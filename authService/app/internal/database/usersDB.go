@@ -48,9 +48,8 @@ func (db *UsersDB) Add(ctx context.Context, user model.User) error {
 	    sign,
 		name,
 		password,
-	    created_at
 	)values (
-	    $1,$2,$3,$4,$5,$6 
+	    $1,$2,$3,$4,$5
 	)
 	`
 	user.Sign = astroWorker.CalculateSign(user.BirthInfo)
@@ -60,7 +59,6 @@ func (db *UsersDB) Add(ctx context.Context, user model.User) error {
 		user.Sign,
 		user.Name,
 		password,
-		user.CreatedAt,
 	)
 	if err != nil {
 		return AddingUserErr
@@ -76,14 +74,13 @@ func (db *UsersDB) Get(ctx context.Context, id int64) (*model.User, error) {
 			   sign,
 			   name,
 			   password,
-			   created_at
 		from users
 		where id=$1
 	`
 
 	var user model.User
 	row := db.db.QueryRowxContext(ctx, query, id)
-	err := row.Scan(&user.Email, &user.BirthInfo, &user.Sign, &user.Name, &user.Password, &user.CreatedAt)
+	err := row.Scan(&user.Email, &user.BirthInfo, &user.Sign, &user.Name, &user.Password)
 	if err != nil {
 		return nil, GettingUserErr
 	}

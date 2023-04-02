@@ -46,6 +46,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	runGRPC(config2, cron, messageWorker, ":9092")
+	runGRPC(config2, cron, messageWorker, ":9002")
 
 }

@@ -4,7 +4,7 @@ package protobuf;
 option go_package = "/pb";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
-import "google/type/datetime.proto";
+import "google/type/date.proto";
 
 service AuthService{
   rpc GetUser(GetUserRequest) returns (GetUserResponse){
@@ -39,7 +39,6 @@ message User{
   string Name = 3;
   string Password = 4;
   uint64 ID = 5;
-  google.type.DateTime BirthInfo = 6;
-  google.type.DateTime CreatedAt = 7;
+  google.type.Date BirthInfo = 6;
 }
 

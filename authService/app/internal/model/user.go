@@ -10,6 +10,5 @@ type User struct {
 	Sign      string
 	Name      string
 	Password  string
-	CreatedAt time.Time
 	BirthInfo time.Time
 }

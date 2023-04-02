@@ -4,11 +4,9 @@ import (
 	"authService/app/internal/config"
 	"authService/app/internal/database"
 	db "authService/app/internal/database"
-	"authService/app/internal/helpers/protobuf"
 	"authService/app/protobuf/pb"
 	"context"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 )
 
@@ -34,16 +32,16 @@ func (s *Server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUs
 		return nil, err
 	}
 	return &pb.GetUserResponse{User: &pb.User{
-		Email:     user.Email,
-		Sign:      user.Sign,
-		Name:      user.Name,
-		ID:        uint64(int64(user.ID)),
-		BirthInfo: protobuf.DateToProtobuf(user.BirthInfo),
-		CreatedAt: timestamppb.New(user.CreatedAt),
+		Email: user.Email,
+		Sign:  user.Sign,
+		Name:  user.Name,
+		ID:    uint64(int64(user.ID)),
+		//BirthInfo: protobuf.DateToProtobuf(user.BirthInfo),
+		//CreatedAt: timestamppb.New(user.CreatedAt),
 	}}, nil
 }
 func (s *Server) AddUser(ctx context.Context, req *pb.AddUserRequest) (*pb.AddUserResponse, error) {
-
+	return nil, nil
 }
 func NewServerGateway() (*Server, error) {
 	ctx := context.Background()

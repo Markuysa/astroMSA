@@ -12,56 +12,52 @@ import (
 )
 
 var (
-	authService    = ":9000"
-	messageService = ":9002"
-	astroService   = ":9090"
+	authService    = ":9093"
+	messageService = ":9090"
+	astroService   = ":9091"
 )
 
 func HTTPProxy(proxyaddr string) {
 	grpcGwMux := runtime.NewServeMux()
 
-	//// Connecting to auth service
-	//grpcAuthConn, err := grpc.Dial(
-	//	authService,
-	//	//grpc.WithPerRPCCredentials(&reqData{}),
-	//	grpc.WithTransportCredentials(insecure.NewCredentials()),
-	//)
-	//if err != nil {
-	//	log.Fatalln("Filed to connect to User service", err)
-	//}
-	//defer grpcAuthConn.Close()
-	//
-	//err = protobuf.RegisterAuthServiceHandler(
-	//	context.Background(),
-	//	grpcGwMux,
-	//	grpcAuthConn,
-	//)
-	//if err != nil {
-	//	log.Fatalln("Filed to start HTTP server", err)
-	//}
-	////Connecting to message service
-	//grpcMessagesConn, err := grpc.Dial(
-	//	messageService,
-	//	//grpc.WithPerRPCCredentials(&reqData{}),
-	//	grpc.WithTransportCredentials(insecure.NewCredentials()),
-	//)
-	//if err != nil {
-	//	log.Fatalln("Filed to connect to Messages sender service", err)
-	//}
-	//defer grpcMessagesConn.Close()
-	//
-	//err = protobuf.RegisterMessageServiceHandler(
-	//	context.Background(),
-	//	grpcGwMux,
-	//	grpcMessagesConn,
-	//)
-	//if err != nil {
-	//	log.Fatalln("Filed to start HTTP server", err)
-	//}
+	// Connecting to auth service
+	grpcAuthConn, err := grpc.Dial(
+		authService,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
+	if err != nil {
+		log.Fatalln("Filed to connect to User service", err)
+	}
+	defer grpcAuthConn.Close()
+	err = protobuf.RegisterAuthServiceHandler(
+		context.Background(),
+		grpcGwMux,
+		grpcAuthConn,
+	)
+	if err != nil {
+		log.Fatalln("Filed to start HTTP server", err)
+	}
+	//Connecting to message service
+	grpcMessagesConn, err := grpc.Dial(
+		messageService,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
+	if err != nil {
+		log.Fatalln("Filed to connect to Messages sender service", err)
+	}
+	defer grpcMessagesConn.Close()
+
+	err = protobuf.RegisterMessageServiceHandler(
+		context.Background(),
+		grpcGwMux,
+		grpcMessagesConn,
+	)
+	if err != nil {
+		log.Fatalln("Filed to start HTTP server", err)
+	}
 	// Connecting to astro service
 	grpcAstroConn, err := grpc.Dial(
 		astroService,
-		//grpc.WithPerRPCCredentials(&reqData{}),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {

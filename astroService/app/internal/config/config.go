@@ -23,6 +23,7 @@ func New() (*Config, error) {
 	rawYml, err := os.ReadFile(configFilePath)
 
 	if err != nil {
+		log.Println(err)
 		return nil, err
 		//return nil, configReadError
 	}

@@ -1,52 +1,56 @@
-version: '3.1'
+version: '3.9'
 services:
-  gatweay:
+  gateway:
     container_name: astroGateway
     build: ./apiGateway
-    restart: always
-    expose:
-      - "8085:8085"
+    ports:
+      - "8086:8085"
     depends_on:
       - astro
       - messages
       - auth
-  astro:
-    container_name: astrologyService
-    build:
-      context: ./astroService
-      dockerfile: Dockerfile
-    restart: always
-    working_dir: /app
-    expose:
-      - "9090:9090"
-    volumes:
-      - ./astroService/app/internal/data/config.yml:/app/internal/data/config.yml
+    networks:
+      - astronet
   messages:
     container_name: messagesSenderService
     build: ./messageSenderService
-    restart: always
     working_dir: /app
-    expose:
-      - "9002:9002"
+    ports:
+      - "9090:9002"
+    networks:
+      - astronet
+  astro:
+    container_name: astrologyService
+    build: ./astroService
+    working_dir: /app
+    ports:
+      - "9091:9003"
+    networks:
+      - astronet
   auth:
     container_name: authAstroService
-    build: ./authService/app
-    restart: always
+    build: ./authService
     working_dir: /app
-    expose:
-      - "9000:9000"
+    ports:
+      - "9093:9004"
     depends_on:
-      - usersDB
-  usersDB:
+      - postgres
+    networks:
+      - astronet
+  postgres:
     image: postgres
     environment:
       - POSTGRES_PASSWORD=islam20011
       - POSTGRES_DB=usersDB
-      - POSTGRES_USER=postgres
-    expose:
-      - "5432"
-    restart: always
+      - POSTGRES_USER=root
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - astronet
 volumes:
   postgres_data:
+networks:
+  astronet:
+      driver: bridge

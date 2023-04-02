@@ -15,7 +15,5 @@ WORKDIR /appdir
 
 COPY --from=builder /appdir .
 
-EXPOSE 9090
-
 CMD ["/appdir/main"]
 

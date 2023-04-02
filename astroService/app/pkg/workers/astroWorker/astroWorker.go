@@ -32,38 +32,6 @@ func Init(config *config.Config, client *http.Client) *AstroWorker {
 }
 func (w *AstroWorker) FetchPrediction(ctx context.Context, sign string, day string) (*model.Prediction, error) {
 
-	// TODO fix the problem with fastHTTP
-	//url := "https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=%s&day=%s"
-	//
-	//paramURL := fmt.Sprintf(url, sign, day)
-	//
-	//req := fasthttp.AcquireRequest()
-	//defer fasthttp.ReleaseRequest(req)
-	//
-	//resp := fasthttp.AcquireResponse()
-	//defer fasthttp.ReleaseResponse(resp)
-	//
-	//req.SetRequestURI(paramURL)
-	//
-	//req.Header.Add("X-RapidAPI-Key", "54208fc179msh16e7cc7ea2939dcp1eb840jsnde68a4a6c957")
-	//req.Header.Add("X-RapidAPI-Host", "sameer-kumar-aztro-v1.p.rapidapi.com")
-	//
-	//err := fasthttp.Do(req, resp)
-	//if err != nil {
-	//	return nil, FetchingPredictionError
-	//}
-	//body := resp.Body()
-	//if err != nil {
-	//	return nil, err
-	//}
-	//var prediction model.Prediction
-	//fmt.Println(string(body))
-	//err = json.Unmarshal(body, &prediction)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//
-	//return &prediction, nil
 	url := "https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=%s&day=%s"
 	log.Println(sign, day)
 	url = fmt.Sprintf(url, sign, day)

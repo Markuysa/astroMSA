@@ -12,10 +12,11 @@ RUN go build -o main app/cmd/main/main.go
 FROM alpine
 
 WORKDIR /appdir
+# Здесь попробовать уменьшить размер образа через COPY --from=builder /appdir main
+# Здесь попробовать уменьшить размер образа через COPY --from=builder /appdir configdir
+COPY --from=builder /appdir .
 
-COPY --from=builder /app .
 
-EXPOSE 9000
+CMD ["/appdir/main"]
 
-CMD ["/app/main"]
 

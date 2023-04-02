@@ -9,8 +9,6 @@ import (
 	"google.golang.org/grpc/reflection"
 	"net/http"
 
-	//"astroService/gapi"
-	config2 "github.com/Markuysa/astroMSA/astroService/app/internal/config"
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/workers/astroWorker"
 
 	//"google.golang.org/grpc/reflection"
@@ -40,17 +38,17 @@ func runGRPC(worker *astroWorker.AstroWorker, logger *zap.Logger) {
 func main() {
 
 	//ctx := context.Background()
-	config, err := config2.New()
-
-	if err != nil {
-		log.Println("WARINni")
-		//log.Fatal(err)
-	}
+	//config, err := config2.New()
+	//
+	//if err != nil {
+	//	log.Println("WARINni")
+	//	//log.Fatal(err)
+	//}
 	logger, err := logger.InitLogger()
 	if err != nil {
 		log.Fatal(err)
 	}
-	astrologyWorker := astroWorker.Init(config, &http.Client{})
+	astrologyWorker := astroWorker.Init(nil, &http.Client{})
 
 	runGRPC(astrologyWorker, logger)
 	if err != nil {

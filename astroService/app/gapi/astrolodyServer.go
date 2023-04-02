@@ -15,7 +15,7 @@ type Server struct {
 
 func NewServer(worker *astroWorker.AstroWorker, logger *zap.Logger) *Server {
 	return &Server{
-		Port:            ":9090",
+		Port:            ":9003",
 		astrologyWorker: worker,
 		logger:          logger,
 	}
