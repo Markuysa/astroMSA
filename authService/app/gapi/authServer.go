@@ -33,7 +33,6 @@ func (s *Server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUs
 }
 func (s *Server) AddUser(ctx context.Context, req *pb.AddUserRequest) (*pb.AddUserResponse, error) {
 	user := protobuf.ConvertUserRequestToUserStruct(req)
-
 	err := s.UsersDB.Add(ctx, user)
 	if err != nil {
 		return &pb.AddUserResponse{Status: false}, err
