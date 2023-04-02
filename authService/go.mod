@@ -1,4 +1,4 @@
-module authService
+module github.com/Markuysa/astroMSA/authService
 
 go 1.19
 

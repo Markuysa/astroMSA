@@ -7,8 +7,7 @@ import (
 	"fmt"
 	"github.com/Markuysa/astroMSA/astroService/app/internal/config"
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/model"
-	"io/ioutil"
-	"log"
+	"github.com/valyala/fasthttp"
 	"net/http"
 )
 
@@ -31,25 +30,31 @@ func Init(config *config.Config, client *http.Client) *AstroWorker {
 	}
 }
 func (w *AstroWorker) FetchPrediction(ctx context.Context, sign string, day string) (*model.Prediction, error) {
-
 	url := "https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=%s&day=%s"
-	log.Println(sign, day)
-	url = fmt.Sprintf(url, sign, day)
 
-	req, _ := http.NewRequest("POST", url, nil)
+	paramURL := fmt.Sprintf(url, sign, day)
 
-	req.Header.Add("X-RapidAPI-Key", w.config.ApiKey)
-	req.Header.Add("X-RapidAPI-Host", w.config.ApiHost)
+	req := fasthttp.AcquireRequest()
+	defer fasthttp.ReleaseRequest(req)
+	req.SetRequestURI(paramURL)
 
-	log.Println(req)
-	res, _ := http.DefaultClient.Do(req)
-	log.Print(res)
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
+	resp := fasthttp.AcquireResponse()
+	defer fasthttp.ReleaseResponse(resp)
 
+	req.Header.Add("X-RapidAPI-Key", "54208fc179msh16e7cc7ea2939dcp1eb840jsnde68a4a6c957")
+	req.Header.Add("X-RapidAPI-Host", "sameer-kumar-aztro-v1.p.rapidapi.com")
+	req.Header.SetMethod(fasthttp.MethodPost)
+
+	err := fasthttp.Do(req, resp)
+	if err != nil {
+		return nil, FetchingPredictionError
+	}
+	body := resp.Body()
 	var prediction model.Prediction
-	if err := json.Unmarshal(body, &prediction); err != nil {
+	err = json.Unmarshal(body, &prediction)
+	if err != nil {
 		return nil, err
 	}
+
 	return &prediction, nil
 }

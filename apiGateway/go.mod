@@ -1,4 +1,4 @@
-module apigw
+module github.com/Markuysa/astroMSA/apigw
 
 go 1.19
 

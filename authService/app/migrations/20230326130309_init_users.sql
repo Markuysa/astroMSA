@@ -9,8 +9,6 @@ create table users
     sign       text      not null,
     name       text      not null,
     password   text      not null,
-    created_at timestamp default CURRENT_TIMESTAMP,
-    updated_at timestamp,
     birth_info timestamp not null
 );
 create table roles

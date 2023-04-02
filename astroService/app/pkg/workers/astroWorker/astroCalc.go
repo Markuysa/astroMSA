@@ -2,10 +2,10 @@ package astroWorker
 
 import (
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/constanses"
-	"time"
+	"github.com/Markuysa/astroMSA/authService/app/pkg/externalModels"
 )
 
-func CalculateSign(birthTime time.Time) string {
+func CalculateSign(birthTime externalModels.Date) string {
 	birthDay := birthTime.Day()
 	birthMonth := birthTime.Month()
 	switch {

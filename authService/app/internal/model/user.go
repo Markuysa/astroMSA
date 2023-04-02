@@ -1,14 +1,13 @@
 package model
 
-import (
-	"time"
-)
+import "github.com/Markuysa/astroMSA/authService/app/pkg/externalModels"
 
 type User struct {
-	ID        uint
-	Email     string
-	Sign      string
-	Name      string
-	Password  string
-	BirthInfo time.Time
+	ID            uint
+	Email         string
+	Sign          string
+	Name          string
+	Password      string
+	Notifications bool
+	BirthInfo     externalModels.Date
 }

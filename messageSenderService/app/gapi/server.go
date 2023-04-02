@@ -1,10 +1,10 @@
 package gapi
 
 import (
-	"messageSenderService/app/internal/config"
-	"messageSenderService/app/internal/workers/cronWorker"
-	"messageSenderService/app/internal/workers/messageSender"
-	"messageSenderService/app/protobuf/pb"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/config"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/workers/cronWorker"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/workers/messageSender"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/protobuf/pb"
 )
 
 type Server struct {

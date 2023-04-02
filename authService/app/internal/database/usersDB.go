@@ -1,13 +1,14 @@
 package database
 
 import (
-	"authService/app/internal/helpers/hash"
-	"authService/app/internal/model"
 	"context"
 	"errors"
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/workers/astroWorker"
+	"github.com/Markuysa/astroMSA/authService/app/internal/helpers/hash"
+	"github.com/Markuysa/astroMSA/authService/app/internal/model"
 	"github.com/jmoiron/sqlx"
 	"log"
+	"time"
 )
 
 var (
@@ -33,7 +34,7 @@ func New(ctx context.Context) *UsersDB {
 	return &UsersDB{db: datab}
 }
 
-func (db *UsersDB) Add(ctx context.Context, user model.User) error {
+func (db *UsersDB) Add(ctx context.Context, user *model.User) error {
 	if _, err := db.Get(ctx, int64(user.ID)); err == nil {
 		return UserAlreadyExistsErr
 	}
@@ -48,8 +49,9 @@ func (db *UsersDB) Add(ctx context.Context, user model.User) error {
 	    sign,
 		name,
 		password,
+		notifications,
 	)values (
-	    $1,$2,$3,$4,$5
+	    $1,$2,$3,$4,$5,$6
 	)
 	`
 	user.Sign = astroWorker.CalculateSign(user.BirthInfo)
@@ -59,6 +61,7 @@ func (db *UsersDB) Add(ctx context.Context, user model.User) error {
 		user.Sign,
 		user.Name,
 		password,
+		user.Notifications,
 	)
 	if err != nil {
 		return AddingUserErr
@@ -74,15 +77,17 @@ func (db *UsersDB) Get(ctx context.Context, id int64) (*model.User, error) {
 			   sign,
 			   name,
 			   password,
+			   notifications
 		from users
 		where id=$1
 	`
 
 	var user model.User
 	row := db.db.QueryRowxContext(ctx, query, id)
-	err := row.Scan(&user.Email, &user.BirthInfo, &user.Sign, &user.Name, &user.Password)
+	var birthDate time.Time
+	err := row.Scan(&user.Email, &birthDate, &user.Sign, &user.Name, &user.Password, &user.Notifications)
 	if err != nil {
-		return nil, GettingUserErr
+		return nil, err
 	}
 	return &user, nil
 }
@@ -95,13 +100,14 @@ func (db *UsersDB) GetUsersEmailsWithAllowedNotifications(ctx context.Context) (
 		where notifications=true
 	`
 	var users []string
-
+	var userEmail string
 	rows, err := db.db.QueryContext(ctx, query)
-	log.Println(rows)
-	if err != nil {
-		return nil, err
+	for rows.Next() {
+		if err := rows.Scan(&userEmail); err != nil {
+			return nil, err
+		}
+		users = append(users, userEmail)
 	}
-	err = rows.Scan(&users)
 	if err != nil {
 		return nil, err
 	}

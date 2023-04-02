@@ -1,6 +1,8 @@
 package constanses
 
-import "time"
+import (
+	date "github.com/Markuysa/astroMSA/authService/app/pkg/externalModels"
+)
 
 var (
 	ARIES       = "aries"
@@ -16,39 +18,39 @@ var (
 	AQUARiUS    = "aquarius"
 	PISCES      = "pisces"
 
-	AriesStartDate = time.Time{}.AddDate(0, 2, 20)
-	AriesEndDate   = time.Time{}.AddDate(0, 3, 19)
+	AriesStartDate = date.New(21, 3, 0)
+	AriesEndDate   = date.New(19, 4, 0)
 
-	TaurusStartDate = time.Time{}.AddDate(0, 3, 20)
-	TaurusEndDate   = time.Time{}.AddDate(0, 4, 20)
+	TaurusStartDate = date.New(20, 4, 0)
+	TaurusEndDate   = date.New(20, 5, 0)
 
-	GeminiStartDate = time.Time{}.AddDate(0, 4, 20)
-	GeminiEndDate   = time.Time{}.AddDate(0, 5, 20)
+	GeminiStartDate = date.New(21, 5, 0)
+	GeminiEndDate   = date.New(21, 6, 0)
 
-	CancerStartDate = time.Time{}.AddDate(0, 5, 21)
-	CancerEndDate   = time.Time{}.AddDate(0, 6, 21)
+	CancerStartDate = date.New(22, 6, 0)
+	CancerEndDate   = date.New(22, 7, 0)
 
-	LeoStartDate = time.Time{}.AddDate(0, 6, 22)
-	LeoEndDate   = time.Time{}.AddDate(0, 7, 22)
+	LeoStartDate = date.New(23, 7, 0)
+	LeoEndDate   = date.New(22, 8, 0)
 
-	VirgoStartDate = time.Time{}.AddDate(0, 7, 23)
-	VirgoEndDate   = time.Time{}.AddDate(0, 8, 21)
+	VirgoStartDate = date.New(23, 8, 0)
+	VirgoEndDate   = date.New(22, 9, 0)
 
-	LibraStartDate = time.Time{}.AddDate(0, 8, 22)
-	LibraEndDate   = time.Time{}.AddDate(0, 9, 22)
+	LibraStartDate = date.New(23, 9, 0)
+	LibraEndDate   = date.New(23, 10, 0)
 
-	ScorpioStartDate = time.Time{}.AddDate(0, 9, 23)
-	ScorpioEndDate   = time.Time{}.AddDate(0, 10, 21)
+	ScorpioStartDate = date.New(24, 10, 0)
+	ScorpioEndDate   = date.New(22, 11, 0)
 
-	SagittariusStartDate = time.Time{}.AddDate(0, 10, 22)
-	SagittariusEndDate   = time.Time{}.AddDate(0, 11, 20)
+	SagittariusStartDate = date.New(23, 11, 0)
+	SagittariusEndDate   = date.New(21, 12, 0)
 
-	CapricornStartDate = time.Time{}.AddDate(0, 11, 21)
-	CapricornEndDate   = time.Time{}.AddDate(0, 12, 19)
+	CapricornStartDate = date.New(22, 12, 0)
+	CapricornEndDate   = date.New(20, 1, 0)
 
-	AquariusStartDate = time.Time{}.AddDate(0, 12, 20)
-	AquariusEndDate   = time.Time{}.AddDate(0, 1, 17)
+	AquariusStartDate = date.New(21, 1, 0)
+	AquariusEndDate   = date.New(18, 2, 0)
 
-	PiscesStartDate = time.Time{}.AddDate(0, 1, 18)
-	PiscesEndDate   = time.Time{}.AddDate(0, 2, 19)
+	PiscesStartDate = date.New(19, 2, 0)
+	PiscesEndDate   = date.New(20, 3, 0)
 )

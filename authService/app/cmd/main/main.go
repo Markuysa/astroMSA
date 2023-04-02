@@ -1,11 +1,11 @@
 package main
 
 import (
-	"authService/app/gapi"
-	"authService/app/internal/config"
-	db "authService/app/internal/database"
-	"authService/app/protobuf/pb"
 	"context"
+	"github.com/Markuysa/astroMSA/authService/app/gapi"
+	"github.com/Markuysa/astroMSA/authService/app/internal/config"
+	db "github.com/Markuysa/astroMSA/authService/app/internal/database"
+	"github.com/Markuysa/astroMSA/authService/app/protobuf/pb"
 	"log"
 	"net"
 

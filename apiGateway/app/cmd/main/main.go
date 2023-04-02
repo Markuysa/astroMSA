@@ -1,9 +1,9 @@
 package main
 
 import (
-	protobuf "apigw/app/services/pb"
 	"context"
 	"fmt"
+	protobuf "github.com/Markuysa/astroMSA/apigw/app/services/pb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

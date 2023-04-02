@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/constanses"
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/workers/astroWorker"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/config"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/helpers/htmlHelper"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/model"
+	modelExternal "github.com/Markuysa/astroMSA/messageSenderService/app/pkg/model"
 	"gopkg.in/gomail.v2"
-	"messageSenderService/app/internal/config"
-	"messageSenderService/app/internal/helpers/htmlHelper"
-	"messageSenderService/app/internal/model"
-	modelExternal "messageSenderService/app/pkg/model"
 	"sync"
 )
 

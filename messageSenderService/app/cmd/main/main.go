@@ -1,14 +1,14 @@
 package main
 
 import (
+	"github.com/Markuysa/astroMSA/messageSenderService/app/gapi"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/config"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/workers/cronWorker"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/workers/messageSender"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/protobuf/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
-	"messageSenderService/app/gapi"
-	"messageSenderService/app/internal/config"
-	"messageSenderService/app/internal/workers/cronWorker"
-	"messageSenderService/app/internal/workers/messageSender"
-	"messageSenderService/app/protobuf/pb"
 	"net"
 )
 
@@ -34,6 +34,7 @@ func runGRPC(config2 *config.Config, cron *cronWorker.JobTicker, msgWorker *mess
 func main() {
 
 	//ctx := context.Background()
+
 	messageConfig, err := config.Init()
 	if err != nil {
 		log.Fatal(err)

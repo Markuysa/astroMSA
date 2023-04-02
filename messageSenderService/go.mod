@@ -1,5 +1,4 @@
-module messageSenderService
-
+module github.com/Markuysa/astroMSA/messageSenderService
 go 1.19
 
 require (

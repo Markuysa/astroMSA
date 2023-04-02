@@ -27,6 +27,9 @@ protoAuth:
 			   --go-grpc_out=authService/app/protobuf/pb --go-grpc_opt=paths=source_relative \
 			   --grpc-gateway_out=authService/app/protobuf/pb --grpc-gateway_opt=paths=source_relative \
 				authService/app/protobuf/*.proto
+some:
+	protoc --proto_path=authService/app/protobuf/google/type --go_out=authService/app/protobuf/pb --go_opt=paths=source_relative \
+           --go-grpc_out=authService/app/protobuf/pb --go-grpc_opt=paths=source_relative authService/app/protobuf/google/type/date.proto
 build:
 	go build -o astroService/main.exe astroService/app/cmd/main/main.go
 	go build -o authService/main.exe authService/app/cmd/main/main.go
