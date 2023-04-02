@@ -9,8 +9,14 @@ service AstrologyService{
   rpc GetPrediction(PredictionRequest) returns (PredictionResponse){
     option (google.api.http).get = "/api/v1/getPrediction";
   }
+  rpc SendPredictions(SendPredictionsRequest)returns (SendPredictionsResponse){
+    option (google.api.http).post = "/api/v1/sendPredictions";
+  }
 }
-
+message SendPredictionsRequest{
+}
+message SendPredictionsResponse{
+}
 message PredictionRequest{
   string Sign = 1;
   string Day  = 2;
