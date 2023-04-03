@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Markuysa/astroMSA/astroService/app/gapi"
+	"github.com/Markuysa/astroMSA/astroService/app/gapi/server"
 	"github.com/Markuysa/astroMSA/astroService/app/internal/logger"
 	pb "github.com/Markuysa/astroMSA/astroService/app/protobuf/pb"
 	"go.uber.org/zap"
@@ -18,7 +18,7 @@ import (
 
 func runGRPC(worker *astroWorker.AstroWorker, logger *zap.Logger) {
 	grpcServer := grpc.NewServer()
-	astroServer := gapi.NewServer(worker, logger)
+	astroServer := server.NewServer(worker, logger)
 	pb.RegisterAstrologyServiceServer(grpcServer, astroServer)
 	reflection.Register(grpcServer)
 

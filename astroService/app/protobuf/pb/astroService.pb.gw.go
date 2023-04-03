@@ -99,7 +99,7 @@ func RegisterAstrologyServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/protobuf.AstrologyService/GetPrediction", runtime.WithHTTPPathPattern("/api/v1/getPrediction"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/protobuf.AstrologyService/GetPrediction", runtime.WithHTTPPathPattern("/api/v1/astro/getPrediction"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -124,7 +124,7 @@ func RegisterAstrologyServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/protobuf.AstrologyService/SendPredictions", runtime.WithHTTPPathPattern("/api/v1/sendPredictions"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/protobuf.AstrologyService/SendPredictions", runtime.WithHTTPPathPattern("/api/v1/astro/sendPredictions"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -188,7 +188,7 @@ func RegisterAstrologyServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/protobuf.AstrologyService/GetPrediction", runtime.WithHTTPPathPattern("/api/v1/getPrediction"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/protobuf.AstrologyService/GetPrediction", runtime.WithHTTPPathPattern("/api/v1/astro/getPrediction"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -210,7 +210,7 @@ func RegisterAstrologyServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/protobuf.AstrologyService/SendPredictions", runtime.WithHTTPPathPattern("/api/v1/sendPredictions"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/protobuf.AstrologyService/SendPredictions", runtime.WithHTTPPathPattern("/api/v1/astro/sendPredictions"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -230,9 +230,9 @@ func RegisterAstrologyServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 }
 
 var (
-	pattern_AstrologyService_GetPrediction_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "getPrediction"}, ""))
+	pattern_AstrologyService_GetPrediction_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "astro", "getPrediction"}, ""))
 
-	pattern_AstrologyService_SendPredictions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "sendPredictions"}, ""))
+	pattern_AstrologyService_SendPredictions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "astro", "sendPredictions"}, ""))
 )
 
 var (

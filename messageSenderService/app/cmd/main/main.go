@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Markuysa/astroMSA/messageSenderService/app/gapi"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/gapi/server"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/config"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/workers/cronWorker"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/workers/messageSender"
@@ -14,7 +14,7 @@ import (
 
 func runGRPC(config2 *config.Config, cron *cronWorker.JobTicker, msgWorker *messageSender.MsgSenderWorker, port string) {
 	grpcServer := grpc.NewServer()
-	messageSenderServer := gapi.NewServer(config2, cron, msgWorker, port)
+	messageSenderServer := server.NewServer(config2, cron, msgWorker, port)
 	pb.RegisterMessageServiceServer(grpcServer, messageSenderServer)
 	reflection.Register(grpcServer)
 
@@ -47,6 +47,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	runGRPC(config2, cron, messageWorker, ":9002")
+	runGRPC(config2, cron, messageWorker, ":9090")
 
 }

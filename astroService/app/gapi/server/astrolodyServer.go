@@ -1,4 +1,4 @@
-package gapi
+package server
 
 import (
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/workers/astroWorker"
@@ -15,7 +15,7 @@ type Server struct {
 
 func NewServer(worker *astroWorker.AstroWorker, logger *zap.Logger) *Server {
 	return &Server{
-		Port:            ":9003",
+		Port:            ":9091",
 		astrologyWorker: worker,
 		logger:          logger,
 	}

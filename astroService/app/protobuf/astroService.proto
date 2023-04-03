@@ -7,15 +7,16 @@ import "google/api/annotations.proto";
 
 service AstrologyService{
   rpc GetPrediction(PredictionRequest) returns (PredictionResponse){
-    option (google.api.http).get = "/api/v1/getPrediction";
+    option (google.api.http).get = "/api/v1/astro/getPrediction";
   }
   rpc SendPredictions(SendPredictionsRequest)returns (SendPredictionsResponse){
-    option (google.api.http).post = "/api/v1/sendPredictions";
+    option (google.api.http).post = "/api/v1/astro/sendPredictions";
   }
 }
 message SendPredictionsRequest{
 }
 message SendPredictionsResponse{
+  bool Status = 1;
 }
 message PredictionRequest{
   string Sign = 1;

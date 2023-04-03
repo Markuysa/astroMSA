@@ -10,3 +10,8 @@ type Prediction struct {
 	LuckyNumber   string `json:"lucky_number"`
 	LuckyTime     string `json:"lucky_time"`
 }
+
+type HandledPrediction struct {
+	Prediction
+	Destination string
+}

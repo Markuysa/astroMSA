@@ -1,4 +1,4 @@
-package gapi
+package server
 
 import (
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/config"

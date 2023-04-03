@@ -1,4 +1,4 @@
-package gapi
+package server
 
 import (
 	"context"
@@ -7,5 +7,9 @@ import (
 
 func (s *Server) SendDailyPredictions(ctx context.Context, req *pb.DailyPredictionsRequest) (*pb.DailyPredictionsResponse, error) {
 
-	return nil, nil
+	err := s.MessageWorker.SendDailyPredictions(ctx, req)
+	if err != nil {
+		return &pb.DailyPredictionsResponse{ResponseStatus: false}, err
+	}
+	return &pb.DailyPredictionsResponse{ResponseStatus: true}, nil
 }

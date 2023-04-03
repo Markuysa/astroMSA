@@ -82,7 +82,6 @@ func (db *UsersDB) Get(ctx context.Context, id int64) (*model.User, error) {
 		from users
 		where id=$1
 	`
-
 	var user model.User
 	row := db.db.QueryRowxContext(ctx, query, id)
 	var birthDate time.Time

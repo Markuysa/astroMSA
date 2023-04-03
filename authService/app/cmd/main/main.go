@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/Markuysa/astroMSA/authService/app/gapi"
+	"github.com/Markuysa/astroMSA/authService/app/gapi/server"
 	"github.com/Markuysa/astroMSA/authService/app/internal/config"
 	db "github.com/Markuysa/astroMSA/authService/app/internal/database"
 	"github.com/Markuysa/astroMSA/authService/app/protobuf/pb"
@@ -16,7 +16,7 @@ import (
 func runGRPC(db *db.UsersDB, config *config.Config, port string) {
 	grpcServer := grpc.NewServer()
 	log.Print(port)
-	authServer := gapi.NewServer(config, db, port)
+	authServer := server.NewServer(config, db, port)
 	pb.RegisterAuthServiceServer(grpcServer, authServer)
 	reflection.Register(grpcServer)
 
@@ -41,6 +41,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	runGRPC(usersDatabase, config2, ":9004")
+	runGRPC(usersDatabase, config2, ":9093")
 
 }

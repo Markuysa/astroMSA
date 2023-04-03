@@ -4,7 +4,7 @@ package protobuf;
 option go_package = "/pb";
 import "google/api/annotations.proto";
 import "google/type/date.proto";
-
+import "google/type/receiver.proto";
 service AuthService{
   rpc GetUser(GetUserRequest) returns (GetUserResponse){
     option (google.api.http).get = "/api/v1/users/get";
@@ -15,8 +15,16 @@ service AuthService{
       body: "*";
     };
   };
-}
+  rpc GetUsersWithAllowedNotifications(NotificationsRequest) returns (NotificationResponse){
 
+  };
+}
+message NotificationsRequest{
+
+}
+message NotificationResponse{
+  repeated google.type.Receiver receivers = 1;
+}
 message GetUserRequest{
   int64 id = 1;
 }

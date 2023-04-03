@@ -3,12 +3,13 @@ package messageSender
 import (
 	"context"
 	"fmt"
-	"github.com/Markuysa/astroMSA/astroService/app/pkg/constanses"
-	"github.com/Markuysa/astroMSA/astroService/app/pkg/workers/astroWorker"
+	astroModels "github.com/Markuysa/astroMSA/astroService/app/pkg/model"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/gapi/client"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/config"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/helpers/htmlHelper"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/model"
 	modelExternal "github.com/Markuysa/astroMSA/messageSenderService/app/pkg/model"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/protobuf/pb"
 	"gopkg.in/gomail.v2"
 	"sync"
 )
@@ -44,17 +45,22 @@ func (s *MsgSenderWorker) SendHTML(ctx context.Context, message model.Message) e
 	return nil
 }
 
-func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, receivers []modelExternal.Receiver) error {
-	// FIX HERE astroworker
+func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, req *pb.DailyPredictionsRequest) error {
+
 	wg := sync.WaitGroup{}
 	bodyPath := "app/ui/Prediction.html"
-	var worker astroWorker.AstroWorker
-	for _, receiver := range receivers {
+	receiversChan := make(chan astroModels.HandledPrediction, 10)
+	// TODO idk how to fix this stuff )()(()O
+	for _, receiver := range req.Receivers {
+		go func(receiver any) {
+			client.FetchPrediction(ctx,receiver.)
+
+		}(receiver)
 		go func(receiver modelExternal.Receiver) {
 			wg.Add(1)
 			defer wg.Done()
-			prediction, _ := worker.FetchPrediction(ctx, constanses.ARIES, "today")
-			body, err := htmlHelper.GetHTMLDailyPrediction(bodyPath, *prediction)
+
+			body, err := htmlHelper.GetHTMLDailyPrediction(bodyPath)
 
 			err = s.SendHTML(ctx, model.Message{
 				Receiver: receiver.Email,

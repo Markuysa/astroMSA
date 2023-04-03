@@ -1,13 +1,11 @@
-package gapi
+package server
 
 import (
 	"context"
+	"github.com/Markuysa/astroMSA/astroService/app/gapi/client"
 	"github.com/Markuysa/astroMSA/astroService/app/internal/helpers"
 	pb "github.com/Markuysa/astroMSA/astroService/app/protobuf/pb"
 	"go.uber.org/zap"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"log"
 )
 
 func (s *Server) GetPrediction(ctx context.Context, req *pb.PredictionRequest) (*pb.PredictionResponse, error) {
@@ -21,11 +19,9 @@ func (s *Server) GetPrediction(ctx context.Context, req *pb.PredictionRequest) (
 }
 
 func (s *Server) SendPredictions(ctx context.Context, req *pb.SendPredictionsRequest) (*pb.SendPredictionsResponse, error) {
-	conn, err := grpc.Dial("localhost:9004", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	err := client.SendDailyPredictions(ctx)
 	if err != nil {
-		log.Fatalf("failed to connect: %v", err)
+		return &pb.SendPredictionsResponse{Status: false}, err
 	}
-	defer conn.Close()
-
-	return nil, nil
+	return &pb.SendPredictionsResponse{Status: true}, nil
 }

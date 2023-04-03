@@ -3,7 +3,8 @@ syntax = "proto3";
 package protobuf;
 option go_package = "/pb";
 import "google/api/annotations.proto";
-import "google/protobuf/any.proto";
+
+import "google/type/receiver.proto";
 service MessageService{
   rpc SendDailyPredictions(DailyPredictionsRequest) returns (DailyPredictionsResponse){
     option (google.api.http) = {
@@ -12,7 +13,7 @@ service MessageService{
   }
 }
 message DailyPredictionsResponse{
-  google.protobuf.Any responseStatus = 1;
+  bool responseStatus = 1;
 }
 message Receiver{
   string Zodiac = 1;
@@ -20,5 +21,6 @@ message Receiver{
 }
 
 message DailyPredictionsRequest{
-  repeated Receiver Receivers = 1;
+  string day = 1;
+  repeated google.type.Receiver receivers = 2;
 }

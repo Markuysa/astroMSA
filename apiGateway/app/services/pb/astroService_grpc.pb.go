@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AstrologyServiceClient interface {
 	GetPrediction(ctx context.Context, in *PredictionRequest, opts ...grpc.CallOption) (*PredictionResponse, error)
+	SendPredictions(ctx context.Context, in *SendPredictionsRequest, opts ...grpc.CallOption) (*SendPredictionsResponse, error)
 }
 
 type astrologyServiceClient struct {
@@ -42,11 +43,21 @@ func (c *astrologyServiceClient) GetPrediction(ctx context.Context, in *Predicti
 	return out, nil
 }
 
+func (c *astrologyServiceClient) SendPredictions(ctx context.Context, in *SendPredictionsRequest, opts ...grpc.CallOption) (*SendPredictionsResponse, error) {
+	out := new(SendPredictionsResponse)
+	err := c.cc.Invoke(ctx, "/protobuf.AstrologyService/SendPredictions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AstrologyServiceServer is the server API for AstrologyService service.
 // All implementations must embed UnimplementedAstrologyServiceServer
 // for forward compatibility
 type AstrologyServiceServer interface {
 	GetPrediction(context.Context, *PredictionRequest) (*PredictionResponse, error)
+	SendPredictions(context.Context, *SendPredictionsRequest) (*SendPredictionsResponse, error)
 	mustEmbedUnimplementedAstrologyServiceServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedAstrologyServiceServer struct {
 
 func (UnimplementedAstrologyServiceServer) GetPrediction(context.Context, *PredictionRequest) (*PredictionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPrediction not implemented")
+}
+func (UnimplementedAstrologyServiceServer) SendPredictions(context.Context, *SendPredictionsRequest) (*SendPredictionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendPredictions not implemented")
 }
 func (UnimplementedAstrologyServiceServer) mustEmbedUnimplementedAstrologyServiceServer() {}
 
@@ -88,6 +102,24 @@ func _AstrologyService_GetPrediction_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AstrologyService_SendPredictions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendPredictionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AstrologyServiceServer).SendPredictions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protobuf.AstrologyService/SendPredictions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AstrologyServiceServer).SendPredictions(ctx, req.(*SendPredictionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AstrologyService_ServiceDesc is the grpc.ServiceDesc for AstrologyService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var AstrologyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPrediction",
 			Handler:    _AstrologyService_GetPrediction_Handler,
+		},
+		{
+			MethodName: "SendPredictions",
+			Handler:    _AstrologyService_SendPredictions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

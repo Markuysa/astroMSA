@@ -12,9 +12,9 @@ import (
 )
 
 var (
-	authService    = ":9093"
 	messageService = ":9090"
 	astroService   = ":9091"
+	authService    = ":9093"
 )
 
 func HTTPProxy(proxyaddr string) {
@@ -82,5 +82,5 @@ func HTTPProxy(proxyaddr string) {
 	log.Fatal(http.ListenAndServe(proxyaddr, mux))
 }
 func main() {
-	HTTPProxy(":8085")
+	HTTPProxy(":8086")
 }
