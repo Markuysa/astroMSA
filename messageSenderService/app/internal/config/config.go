@@ -17,6 +17,7 @@ var (
 	configPath            = "messageSenderService/app/internal/data/config.yml"
 )
 
+// Init method creates an object of configs
 func Init() (*Config, error) {
 
 	rawYml, err := os.ReadFile(configPath)
@@ -33,6 +34,7 @@ func Init() (*Config, error) {
 	return &config, nil
 }
 
+// ChangeSenderUser method changes the sender email and password
 func ChangeSenderUser(senderMail, senderPassword string) error {
 	//TODO finish
 	return nil

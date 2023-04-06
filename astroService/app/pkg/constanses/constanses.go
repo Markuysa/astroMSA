@@ -4,6 +4,7 @@ import (
 	date "github.com/Markuysa/astroMSA/authService/app/pkg/externalModels"
 )
 
+// constances to work with astro stuff
 var (
 	ARIES       = "aries"
 	TAURUS      = "taurus"

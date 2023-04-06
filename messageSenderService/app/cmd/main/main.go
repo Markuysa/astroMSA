@@ -12,6 +12,7 @@ import (
 	"net"
 )
 
+// runGRPC method runs a gRPC server on some port
 func runGRPC(config2 *config.Config, cron *cronWorker.JobTicker, msgWorker *messageSender.MsgSenderWorker, port string) {
 	grpcServer := grpc.NewServer()
 	messageSenderServer := server.NewServer(config2, cron, msgWorker, port)

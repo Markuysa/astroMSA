@@ -7,6 +7,8 @@ import (
 	"github.com/Markuysa/astroMSA/messageSenderService/app/protobuf/pb"
 )
 
+// Server is a structure of gRPC server
+// of the service
 type Server struct {
 	pb.UnimplementedMessageServiceServer
 	MessageWorker *messageSender.MsgSenderWorker
@@ -15,6 +17,7 @@ type Server struct {
 	Port          string
 }
 
+// NewServer method returns an object of messageSenderService
 func NewServer(config *config.Config, cronWorker *cronWorker.JobTicker, msgWorker *messageSender.MsgSenderWorker, port string) *Server {
 	return &Server{
 		Config:        config,

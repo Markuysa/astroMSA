@@ -16,6 +16,7 @@ import (
 	"net"
 )
 
+// runGRPC Method to start a gRPC server of the service
 func runGRPC(worker *astroWorker.AstroWorker, logger *zap.Logger) {
 	grpcServer := grpc.NewServer()
 	astroServer := server.NewServer(worker, logger)

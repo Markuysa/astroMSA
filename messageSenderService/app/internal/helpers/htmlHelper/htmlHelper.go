@@ -12,6 +12,8 @@ var (
 	ExecuteHTMLError = errors.New("execute html error (watch the struct)")
 )
 
+// GetHTMLDailyPrediction method parses the HTML template and fills
+// it with necessary data from prediction object
 func GetHTMLDailyPrediction(filePath string, prediction model.Prediction) (*bytes.Buffer, error) {
 
 	var body bytes.Buffer
