@@ -4,6 +4,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// InitLogger method creates a logger
 func InitLogger() (*zap.Logger, error) {
 	config := zap.NewProductionConfig()
 	config.DisableStacktrace = true

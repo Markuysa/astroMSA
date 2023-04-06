@@ -36,6 +36,9 @@ var (
 //	return messageClient, nil
 //}
 
+// SendDailyPredictions Method to send the predictions to users
+// Connects to msgSender - gRPC server and sends a request to send
+// the predictions
 func SendDailyPredictions(ctx context.Context) error {
 	//connecting to msg sender service
 	messageServerConnection, err := grpc.Dial(messageServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -44,20 +47,20 @@ func SendDailyPredictions(ctx context.Context) error {
 		return errors.New(fmt.Sprintf("failed to connect: %v", err))
 	}
 	msgClient := pbMsg.NewMessageServiceClient(messageServerConnection)
-	//connection to auth server
+	//connecting to auth server
 	authServerConnection, err := grpc.Dial(authServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	defer authServerConnection.Close()
 	if err != nil {
 		return errors.New(fmt.Sprintf("failed to connect: %v", err))
 	}
 	authClient := pbAuth.NewAuthServiceClient(authServerConnection)
-
+	
 	//fetch the receivers of prediction
 	receivers, err := authClient.GetUsersWithAllowedNotifications(ctx, &pbAuth.NotificationsRequest{})
 	if err != nil {
 		return errors.New(fmt.Sprintf("failed to fetch receivers: %v", err))
 	}
-	
+
 	_, err = msgClient.SendDailyPredictions(ctx, &pbMsg.DailyPredictionsRequest{Day: "today", Receivers: receivers.Receivers})
 	if err != nil {
 		return err

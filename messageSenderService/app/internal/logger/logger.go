@@ -1,22 +1,18 @@
 package logger
 
 import (
-	"log"
-
 	"go.uber.org/zap"
 )
 
-var logger *zap.Logger
-
-func init() {
-	localLogger, err := zap.NewProduction()
+// InitLogger method creates a logger
+func InitLogger() (*zap.Logger, error) {
+	config := zap.NewProductionConfig()
+	config.DisableStacktrace = true
+	config.DisableCaller = true
+	config.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
+	logger, err := config.Build()
 	if err != nil {
-		log.Fatal("logger init", err)
+		return nil, err
 	}
-
-	logger = localLogger
-}
-
-func Info(msg string, fields ...zap.Field) {
-	logger.Info(msg, fields...)
+	return logger, nil
 }

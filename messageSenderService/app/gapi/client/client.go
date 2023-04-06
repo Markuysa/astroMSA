@@ -14,6 +14,8 @@ var (
 	authServerPort  = "9093"
 )
 
+// FetchPrediction method is needed to get a prediction
+// from astroService using messageService gRPC client
 func FetchPrediction(ctx context.Context, day string, sign string) (*pbAstro.PredictionResponse, error) {
 	astroServiceConnection, err := grpc.Dial(astroServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	defer astroServiceConnection.Close()

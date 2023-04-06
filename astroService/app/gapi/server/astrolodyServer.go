@@ -6,6 +6,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// Server structure of the gRPC server
 type Server struct {
 	pb.UnimplementedAstrologyServiceServer
 	Port            string
@@ -13,6 +14,7 @@ type Server struct {
 	logger          *zap.Logger
 }
 
+// NewServer creates an object of the server
 func NewServer(worker *astroWorker.AstroWorker, logger *zap.Logger) *Server {
 	return &Server{
 		Port:            ":9091",

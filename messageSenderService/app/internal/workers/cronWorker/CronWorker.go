@@ -19,17 +19,23 @@ func Init() *JobTicker {
 	return &JobTicker{timer: time.NewTimer(INTERVAL_PERIOD)}
 }
 
+// StartTicker method starts a ticker
+// with INTERVAL_PERIOD interval and
+// updates the timer in the particular
+// time (HOUR_TO_TICK, MINUTE_TO_TICK, SECOND_TO_TICK)
 func (t *JobTicker) StartTicker() {
 	jobTicker := &JobTicker{}
 	jobTicker.updateTimer()
 	for {
 		<-jobTicker.timer.C
-		// here some useful work
+		// TODO add sending messages to the customers
 		fmt.Println(time.Now(), "- just ticked")
 		jobTicker.updateTimer()
 	}
 }
 
+// updateTimer updates the timer according to some
+// previously known timestamp
 func (t *JobTicker) updateTimer() {
 	nextTick := time.Date(time.Now().Year(), time.Now().Month(),
 		time.Now().Day(), HOUR_TO_TICK, MINUTE_TO_TICK, SECOND_TO_TICK, 0, time.Local)

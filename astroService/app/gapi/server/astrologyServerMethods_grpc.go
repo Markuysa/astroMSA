@@ -8,6 +8,8 @@ import (
 	"go.uber.org/zap"
 )
 
+// GetPrediction method returns a prediction
+// by sign and day (today, tomorrow...)
 func (s *Server) GetPrediction(ctx context.Context, req *pb.PredictionRequest) (*pb.PredictionResponse, error) {
 	sign, day := req.Sign, req.Day
 	s.logger.Info("Incoming get prediction request", zap.String("sign", sign), zap.String("day", day))
@@ -18,6 +20,9 @@ func (s *Server) GetPrediction(ctx context.Context, req *pb.PredictionRequest) (
 	return helpers.PredictionToPb(predition), nil
 }
 
+// SendPredictions method runs a client method
+// SendDailyPredictions to send a predictions through other
+// services
 func (s *Server) SendPredictions(ctx context.Context, req *pb.SendPredictionsRequest) (*pb.SendPredictionsResponse, error) {
 	err := client.SendDailyPredictions(ctx)
 	if err != nil {

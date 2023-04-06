@@ -13,6 +13,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
+// runGRPC method starts a gRPC server of the service
 func runGRPC(db *db.UsersDB, config *config.Config, port string) {
 	grpcServer := grpc.NewServer()
 	log.Print(port)

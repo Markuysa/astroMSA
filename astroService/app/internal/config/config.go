@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// Config structure of project config
 type Config struct {
 	ApiKey  string `yaml:"apiToken"`
 	ApiHost string `yaml:"apiHost"`
@@ -18,6 +19,7 @@ var (
 	configParseError = errors.New("Error of parsing config file")
 )
 
+// New - is the constructor of Config
 func New() (*Config, error) {
 
 	rawYml, err := os.ReadFile(configFilePath)

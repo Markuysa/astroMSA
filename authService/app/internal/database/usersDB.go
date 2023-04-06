@@ -19,10 +19,19 @@ var (
 	PasswordHashErr      = errors.New("password hash err")
 )
 
+// UsersRepository - Interface of users database
+type UsersRepository interface {
+	Add(ctx context.Context, user *model.User) error
+	Get(ctx context.Context, id int64) (*model.User, error)
+	GetUsersEmailsWithAllowedNotifications(ctx context.Context) ([]string, error)
+}
+
+// UsersDB - structure, that implements a UsersRepository interface
 type UsersDB struct {
 	db *sqlx.DB
 }
 
+// New method creates an object of users repository
 func New(ctx context.Context) *UsersDB {
 
 	datab, err := sqlx.ConnectContext(ctx,
@@ -35,6 +44,7 @@ func New(ctx context.Context) *UsersDB {
 	return &UsersDB{db: datab}
 }
 
+// Add method creates user object and saves him/her in the database
 func (db *UsersDB) Add(ctx context.Context, user *model.User) error {
 	if _, err := db.Get(ctx, int64(user.ID)); err == nil {
 		return UserAlreadyExistsErr
@@ -70,6 +80,8 @@ func (db *UsersDB) Add(ctx context.Context, user *model.User) error {
 	return nil
 }
 
+// Get method selects a user from the database with
+// some id
 func (db *UsersDB) Get(ctx context.Context, id int64) (*model.User, error) {
 
 	query := `
@@ -93,6 +105,8 @@ func (db *UsersDB) Get(ctx context.Context, id int64) (*model.User, error) {
 	return &user, nil
 }
 
+// GetUsersEmailsWithAllowedNotifications selects all the users with allowed notifications
+// to send the daily predictions through gmail
 func (db *UsersDB) GetUsersEmailsWithAllowedNotifications(ctx context.Context) ([]string, error) {
 
 	query := `

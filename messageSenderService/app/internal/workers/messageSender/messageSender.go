@@ -8,7 +8,6 @@ import (
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/config"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/helpers/htmlHelper"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/model"
-	modelExternal "github.com/Markuysa/astroMSA/messageSenderService/app/pkg/model"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/protobuf/pb"
 	"gopkg.in/gomail.v2"
 	"sync"
@@ -29,6 +28,8 @@ func Init(config *config.Config) *MsgSenderWorker {
 	}
 }
 
+// SendHTML methods sends a message using gmail
+// with some HTML template
 func (s *MsgSenderWorker) SendHTML(ctx context.Context, message model.Message) error {
 
 	m := gomail.NewMessage()
@@ -45,21 +46,27 @@ func (s *MsgSenderWorker) SendHTML(ctx context.Context, message model.Message) e
 	return nil
 }
 
+// SendDailyPredictions sends predictions to users in goroutines
 func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, req *pb.DailyPredictionsRequest) error {
 
 	wg := sync.WaitGroup{}
 	bodyPath := "app/ui/Prediction.html"
 	receiversChan := make(chan astroModels.HandledPrediction, 10)
-	// TODO idk how to fix this stuff )()(()O
 	for _, receiver := range req.Receivers {
-		go func(receiver any) {
-			client.FetchPrediction(ctx,receiver.)
+		go func(receiver *pb.Receiver) {
+			prediction, err := client.FetchPrediction(ctx, req.Day, receiver.Zodiac)
+			if err != nil {
+				return
+			}
+			receiversChan <- astroModels.HandledPrediction{Prediction: prediction, Destination: receiver.Email}
 
 		}(receiver)
-		go func(receiver modelExternal.Receiver) {
+		go func(receiver *pb.Receiver) {
 			wg.Add(1)
 			defer wg.Done()
+			for receiver := range receiversChan {
 
+			}
 			body, err := htmlHelper.GetHTMLDailyPrediction(bodyPath)
 
 			err = s.SendHTML(ctx, model.Message{

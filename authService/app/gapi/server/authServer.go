@@ -9,6 +9,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 )
 
+// Server struct - structure of gRPC server of the service
 type Server struct {
 	pb.UnimplementedAuthServiceServer
 	Config  *config.Config
@@ -16,6 +17,7 @@ type Server struct {
 	Port    string
 }
 
+// NewServer method creates an object of the server
 func NewServer(config *config.Config, usersDB *database.UsersDB, port string) *Server {
 	return &Server{
 		Config:  config,
@@ -24,6 +26,8 @@ func NewServer(config *config.Config, usersDB *database.UsersDB, port string) *S
 	}
 }
 
+// GetUser method handles the /api/v1/users/get endpoint
+// and returns a protobuf user message
 func (s *Server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error) {
 	user, err := s.UsersDB.Get(ctx, req.GetId())
 	if err != nil {
@@ -31,6 +35,9 @@ func (s *Server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUs
 	}
 	return protobuf.ConvertUserToPbResponse(user), nil
 }
+
+// AddUser method handles the /api/v1/users/add endpoint
+// and adds some user, then returns the status code in AddUserResponse message
 func (s *Server) AddUser(ctx context.Context, req *pb.AddUserRequest) (*pb.AddUserResponse, error) {
 	user := protobuf.ConvertUserRequestToUserStruct(req)
 	err := s.UsersDB.Add(ctx, user)

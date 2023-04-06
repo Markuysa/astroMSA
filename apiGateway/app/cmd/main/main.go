@@ -17,6 +17,9 @@ var (
 	authService    = ":9093"
 )
 
+// HTTPProxy REST API gateway for incoming requests
+// Connects to every microservice using gRPC and
+// runs a http server running on some port
 func HTTPProxy(proxyaddr string) {
 	grpcGwMux := runtime.NewServeMux()
 
