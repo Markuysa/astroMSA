@@ -2,11 +2,11 @@
 // source: astroServices.proto
 
 /*
-Package pb is a reverse proxy.
+Package gen is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package pb
+package gen
 
 import (
 	"context"

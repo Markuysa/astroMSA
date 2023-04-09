@@ -4,7 +4,7 @@
 // - protoc             v4.22.0
 // source: astroServices.proto
 
-package pb
+package gen
 
 import (
 	context "context"
