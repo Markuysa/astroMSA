@@ -2,10 +2,10 @@ package server
 
 import (
 	"context"
+	pb "github.com/Markuysa/astroMSA/apigw/app/protobuf/gen"
 	"github.com/Markuysa/astroMSA/authService/app/internal/config"
 	"github.com/Markuysa/astroMSA/authService/app/internal/database"
 	"github.com/Markuysa/astroMSA/authService/app/internal/helpers/protobuf"
-	"github.com/Markuysa/astroMSA/authService/app/protobuf/pb"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 )
 

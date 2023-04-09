@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
+	pb "github.com/Markuysa/astroMSA/apigw/app/protobuf/gen"
 	"github.com/Markuysa/astroMSA/authService/app/gapi/server"
 	"github.com/Markuysa/astroMSA/authService/app/internal/config"
 	db "github.com/Markuysa/astroMSA/authService/app/internal/database"
-	"github.com/Markuysa/astroMSA/authService/app/protobuf/pb"
 	"log"
 	"net"
 

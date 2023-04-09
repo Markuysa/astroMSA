@@ -1,7 +1,5 @@
 package model
 
-import "github.com/Markuysa/astroMSA/astroService/app/protobuf/pb"
-
 // Prediction structure of astro prediction
 type Prediction struct {
 	DateRange     string `json:"date_range"`
@@ -15,6 +13,6 @@ type Prediction struct {
 }
 
 type HandledPrediction struct {
-	Prediction  *pb.PredictionResponse
+	Prediction  *Prediction
 	Destination string
 }

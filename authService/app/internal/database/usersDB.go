@@ -36,7 +36,7 @@ func New(ctx context.Context) *UsersDB {
 
 	datab, err := sqlx.ConnectContext(ctx,
 		"postgres",
-		"host=localhost port=5432 user=postgres password=islam20011 sslmode=disable")
+		"host=localhost port=5432 user=usersDB password=islam20011 sslmode=disable")
 
 	if err != nil {
 		log.Fatal(err)
