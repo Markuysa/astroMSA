@@ -52,32 +52,31 @@ func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, req *pb.Dail
 	wg := sync.WaitGroup{}
 	bodyPath := "app/ui/Prediction.html"
 	receiversChan := make(chan astroModels.HandledPrediction, 10)
+
+	// TODO debug goroutines (wg or idk)
 	for _, receiver := range req.Receivers {
+		wg.Add(1)
 		go func(receiver *pb.Receiver) {
 			prediction, err := client.FetchPrediction(ctx, req.Day, receiver.Zodiac)
 			if err != nil {
 				return
 			}
 			receiversChan <- astroModels.HandledPrediction{Prediction: prediction, Destination: receiver.Email}
-
 		}(receiver)
 		go func(receiver *pb.Receiver) {
-			wg.Add(1)
-			defer wg.Done()
 			for receiver := range receiversChan {
-
-			}
-			body, err := htmlHelper.GetHTMLDailyPrediction(bodyPath)
-
-			err = s.SendHTML(ctx, model.Message{
-				Receiver: receiver.Email,
-				Body:     body.String(),
-				Subject:  "Daily prediction",
-			})
-			if err != nil {
-				return
+				body, err := htmlHelper.GetHTMLDailyPrediction(bodyPath, receiver.Prediction)
+				err = s.SendHTML(ctx, model.Message{
+					Receiver: receiver.Destination,
+					Body:     body.String(),
+					Subject:  "Daily prediction",
+				})
+				if err != nil {
+					return
+				}
 			}
 		}(receiver)
+		close(receiversChan)
 	}
 	wg.Wait()
 	return nil

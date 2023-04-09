@@ -3,7 +3,7 @@ package htmlHelper
 import (
 	"bytes"
 	"errors"
-	"github.com/Markuysa/astroMSA/astroService/app/pkg/model"
+	"github.com/Markuysa/astroMSA/astroService/app/protobuf/pb"
 	"html/template"
 )
 
@@ -14,7 +14,7 @@ var (
 
 // GetHTMLDailyPrediction method parses the HTML template and fills
 // it with necessary data from prediction object
-func GetHTMLDailyPrediction(filePath string, prediction model.Prediction) (*bytes.Buffer, error) {
+func GetHTMLDailyPrediction(filePath string, prediction *pb.PredictionResponse) (*bytes.Buffer, error) {
 
 	var body bytes.Buffer
 	t, err := template.ParseFiles(filePath)

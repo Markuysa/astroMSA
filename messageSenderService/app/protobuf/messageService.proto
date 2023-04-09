@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package protobuf;
 option go_package = "/pb";
+import "google/genTypes/receiver.proto";
 import "google/api/annotations.proto";
 
 service MessageService{
@@ -14,12 +15,8 @@ service MessageService{
 message DailyPredictionsResponse{
   bool responseStatus = 1;
 }
-message Receiver{
-  string Zodiac = 1;
-  string Email  = 2;
-}
 
 message DailyPredictionsRequest{
   string day = 1;
-  repeated Receiver receivers = 2;
+  repeated genTypes.Receiver receivers = 2;
 }

@@ -10,7 +10,9 @@ services:
       - messages
       - auth
     networks:
-      - astronet
+      astronet:
+        aliases:
+          - gateway
   messages:
     container_name: messagesSenderService
     build: ./messageSenderService
@@ -18,7 +20,9 @@ services:
     ports:
       - "9090:9002"
     networks:
-      - astronet
+      astronet:
+        aliases:
+          - messages
   astro:
     container_name: astrologyService
     build: ./astroService
@@ -26,7 +30,9 @@ services:
     ports:
       - "9091:9003"
     networks:
-      - astronet
+      astronet:
+        aliases:
+          - astro
   auth:
     container_name: authAstroService
     build: ./authService
@@ -36,7 +42,9 @@ services:
     depends_on:
       - postgres
     networks:
-      - astronet
+      astronet:
+        aliases:
+          - auth
   postgres:
     image: postgres
     environment:
@@ -48,9 +56,18 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - astronet
+      astronet:
+        aliases:
+          - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -q -U postgres || exit 1"]
+      interval: 5s
+      timeout: 30s
+      retries: 3
+      start_period: 20s
+
 volumes:
   postgres_data:
 networks:
   astronet:
-      driver: bridge
+    driver: bridge
