@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package protobuf;
+option go_package = "/pb";
+import "google/api/annotations.proto";
+import "google/type/date.proto";
+
+// Required types
+message Receiver{
+  string Zodiac = 1;
+  string Email  = 2;
+}
+
+// Message sender service
+service MessageService{
+  rpc SendDailyPredictions(DailyPredictionsRequest) returns (DailyPredictionsResponse){
+    option (google.api.http) = {
+      post: "/api/v1/sendPredictions";
+    };
+  }
+}
+message DailyPredictionsResponse{
+  bool responseStatus = 1;
+}
+message DailyPredictionsRequest{
+  string day = 1;
+  repeated Receiver receivers = 2;
+}
+
+// Users authentication service
+service AuthService{
+  rpc GetUser(GetUserRequest) returns (GetUserResponse){
+    option (google.api.http).get = "/api/v1/users/get";
+  };
+  rpc AddUser(AddUserRequest) returns (AddUserResponse){
+    option (google.api.http) = {
+      post: "/api/v1/users/add";
+      body: "*";
+    };
+  };
+  rpc GetUsersWithAllowedNotifications(NotificationsRequest) returns (NotificationResponse){
+      option (google.api.http).get = "/api/v1/users/getNotifications";
+  };
+}
+message NotificationsRequest{
+
+}
+message NotificationResponse{
+  repeated Receiver receivers = 1;
+}
+message GetUserRequest{
+  int64 id = 1;
+}
+message GetUserResponse{
+  User user = 1;
+}
+message AddUserRequest{
+  string Email = 1;
+  string Name = 2;
+  string Password = 3;
+  bool Notifications=4;
+  google.type.Date BirthInfo = 5;
+}
+message AddUserResponse{
+  bool Status = 1;
+}
+message User{
+  string Email = 1;
+  string Sign = 2;
+  string Name = 3;
+  string Password = 4;
+  uint64 ID = 5;
+  google.type.Date BirthInfo = 6;
+}
+
+// AstroService
+service AstrologyService{
+  rpc GetPrediction(PredictionRequest) returns (PredictionResponse){
+    option (google.api.http).get = "/api/v1/astro/getPrediction";
+  }
+  rpc SendPredictions(SendPredictionsRequest)returns (SendPredictionsResponse){
+    option (google.api.http).post = "/api/v1/astro/sendPredictions";
+  }
+}
+message SendPredictionsRequest{
+}
+message SendPredictionsResponse{
+  bool Status = 1;
+}
+message PredictionRequest{
+  string Sign = 1;
+  string Day  = 2;
+}
+message PredictionResponse{
+  string DateRange     = 1;
+  string CurrentDate   = 2;
+  string Description   = 3;
+  string Compatibility = 4;
+  string Mood          = 5;
+  string Color         = 6;
+  string LuckyNumber   = 7;
+  string LuckyTime     = 8;
+}

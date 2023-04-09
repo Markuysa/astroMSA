@@ -1,11 +1,11 @@
 package main
 
 import (
+	pb "github.com/Markuysa/astroMSA/apigw/app/protobuf/gen"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/gapi/server"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/config"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/workers/cronWorker"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/workers/messageSender"
-	"github.com/Markuysa/astroMSA/messageSenderService/app/protobuf/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"

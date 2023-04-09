@@ -1,8 +1,8 @@
 package server
 
 import (
+	pb "github.com/Markuysa/astroMSA/apigw/app/protobuf/gen"
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/workers/astroWorker"
-	pb "github.com/Markuysa/astroMSA/astroService/app/protobuf/pb"
 	"go.uber.org/zap"
 )
 

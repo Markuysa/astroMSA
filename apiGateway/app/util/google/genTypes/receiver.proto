@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package genTypes;
-option go_package = "/gen/proto";
-
-message Receiver{
-  string Zodiac = 1;
-  string Email  = 2;
-}

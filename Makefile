@@ -36,5 +36,11 @@ build:
 	go build -o messageSenderService/main.exe messageSenderService/app/cmd/main/main.go
 
 
-PHONY proto protoAstro protoMessages protoAuth exec:
+astroProto:
+	protoc --proto_path=apiGateway/app/protobuf --go_out=apiGateway/app/protobuf/gen --go_opt=paths=source_relative \
+			--go-grpc_out=apiGateway/app/protobuf/gen --go-grpc_opt=paths=source_relative \
+			--grpc-gateway_out=apiGateway/app/protobuf/gen --grpc-gateway_opt=paths=source_relative \
+			 apiGateway/app/protobuf/astroServices.proto
+
+PHONY proto protoAstro protoMessages protoAuth:
 

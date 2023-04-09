@@ -2,9 +2,9 @@ package server
 
 import (
 	"context"
+	pb "github.com/Markuysa/astroMSA/apigw/app/protobuf/gen"
 	"github.com/Markuysa/astroMSA/astroService/app/gapi/client"
 	"github.com/Markuysa/astroMSA/astroService/app/internal/helpers"
-	pb "github.com/Markuysa/astroMSA/astroService/app/protobuf/pb"
 	"go.uber.org/zap"
 )
 

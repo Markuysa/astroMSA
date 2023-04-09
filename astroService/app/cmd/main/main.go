@@ -1,9 +1,9 @@
 package main
 
 import (
+	pb "github.com/Markuysa/astroMSA/apigw/app/protobuf/gen"
 	"github.com/Markuysa/astroMSA/astroService/app/gapi/server"
 	"github.com/Markuysa/astroMSA/astroService/app/internal/logger"
-	pb "github.com/Markuysa/astroMSA/astroService/app/protobuf/pb"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

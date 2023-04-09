@@ -7,8 +7,9 @@ import (
 	"github.com/Markuysa/astroMSA/messageSenderService/app/gapi/client"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/config"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/helpers/htmlHelper"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/helpers/protoHelper"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/model"
-	"github.com/Markuysa/astroMSA/messageSenderService/app/protobuf/pb"
+	externalModels "github.com/Markuysa/astroMSA/messageSenderService/app/pkg/model"
 	"gopkg.in/gomail.v2"
 	"sync"
 )
@@ -47,37 +48,36 @@ func (s *MsgSenderWorker) SendHTML(ctx context.Context, message model.Message) e
 }
 
 // SendDailyPredictions sends predictions to users in goroutines
-func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, req *pb.DailyPredictionsRequest) error {
-
+// Maybe should receive slice with emails of receivers than struct ?>?
+func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, req []externalModels.Receiver) error {
 	wg := sync.WaitGroup{}
 	bodyPath := "app/ui/Prediction.html"
 	receiversChan := make(chan astroModels.HandledPrediction, 10)
-
-	// TODO debug goroutines (wg or idk)
-	for _, receiver := range req.Receivers {
-		wg.Add(1)
-		go func(receiver *pb.Receiver) {
-			prediction, err := client.FetchPrediction(ctx, req.Day, receiver.Zodiac)
+	go func() {
+		for _, receiver := range req {
+			pbPrediction, err := client.FetchPrediction(ctx, "today", receiver.Zodiac)
+			prediction := protoHelper.PredictionFromPb(pbPrediction)
 			if err != nil {
 				return
 			}
 			receiversChan <- astroModels.HandledPrediction{Prediction: prediction, Destination: receiver.Email}
-		}(receiver)
-		go func(receiver *pb.Receiver) {
-			for receiver := range receiversChan {
-				body, err := htmlHelper.GetHTMLDailyPrediction(bodyPath, receiver.Prediction)
-				err = s.SendHTML(ctx, model.Message{
-					Receiver: receiver.Destination,
-					Body:     body.String(),
-					Subject:  "Daily prediction",
-				})
-				if err != nil {
-					return
-				}
+		}
+	}()
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for receiver := range receiversChan {
+			body, err := htmlHelper.GetHTMLDailyPrediction(bodyPath, *receiver.Prediction)
+			err = s.SendHTML(ctx, model.Message{
+				Receiver: receiver.Destination,
+				Body:     body.String(),
+				Subject:  "Daily prediction",
+			})
+			if err != nil {
+				return
 			}
-		}(receiver)
-		close(receiversChan)
-	}
+		}
+	}()
 	wg.Wait()
 	return nil
 }
