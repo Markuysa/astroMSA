@@ -53,7 +53,6 @@ func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, req []extern
 	wg := sync.WaitGroup{}
 	bodyPath := "app/ui/Prediction.html"
 	receiversChan := make(chan astroModels.HandledPrediction, 10)
-
 	go func() {
 		for _, receiver := range req {
 			pbPrediction, err := client.FetchPrediction(ctx, "today", receiver.Zodiac)
@@ -63,7 +62,6 @@ func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, req []extern
 			}
 			receiversChan <- astroModels.HandledPrediction{Prediction: prediction, Destination: receiver.Email}
 		}
-		close(receiversChan)
 	}()
 	wg.Add(1)
 	go func() {
