@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "github.com/Markuysa/astroMSA/apigw/app/protobuf/gen"
+	pb "github.com/Markuysa/astroMSA/apiGateway/app/protobuf/gen"
 	"github.com/Markuysa/astroMSA/astroService/app/gapi/server"
 	"github.com/Markuysa/astroMSA/astroService/app/internal/logger"
 	"go.uber.org/zap"

@@ -1,7 +1,7 @@
 package protobuf
 
 import (
-	pb "github.com/Markuysa/astroMSA/apigw/app/protobuf/gen"
+	pb "github.com/Markuysa/astroMSA/apiGateway/app/protobuf/gen"
 	"github.com/Markuysa/astroMSA/authService/app/internal/model"
 	"github.com/Markuysa/astroMSA/authService/app/pkg/externalModels"
 	"google.golang.org/genproto/googleapis/type/date"

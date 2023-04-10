@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	protobuf "github.com/Markuysa/astroMSA/apigw/app/protobuf/gen"
+	protobuf "github.com/Markuysa/astroMSA/apiGateway/app/protobuf/gen"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

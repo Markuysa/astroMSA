@@ -2,7 +2,7 @@ package server
 
 import (
 	"context"
-	pb "github.com/Markuysa/astroMSA/apigw/app/protobuf/gen"
+	pb "github.com/Markuysa/astroMSA/apiGateway/app/protobuf/gen"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/helpers/protoHelper"
 )
 

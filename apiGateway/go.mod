@@ -1,4 +1,4 @@
-module github.com/Markuysa/astroMSA/apigw
+module github.com/Markuysa/astroMSA/apiGateway
 
 go 1.19
 

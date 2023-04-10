@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	pb "github.com/Markuysa/astroMSA/apigw/app/protobuf/gen"
+	pb "github.com/Markuysa/astroMSA/apiGateway/app/protobuf/gen"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
