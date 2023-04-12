@@ -49,7 +49,7 @@ message NotificationResponse{
   repeated Receiver receivers = 1;
 }
 message GetUserRequest{
-  int64 id = 1;
+  string eMail = 1;
 }
 message GetUserResponse{
   User user = 1;

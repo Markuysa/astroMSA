@@ -46,7 +46,7 @@ func New(ctx context.Context) *UsersDB {
 
 // Add method creates user object and saves him/her in the database
 func (db *UsersDB) Add(ctx context.Context, user *model.User) error {
-	if _, err := db.Get(ctx, int64(user.ID)); err == nil {
+	if _, err := db.Get(ctx, user.Email); err == nil {
 		return UserAlreadyExistsErr
 	}
 	password, err := hash.HashPassword(user.Password)
@@ -82,7 +82,7 @@ func (db *UsersDB) Add(ctx context.Context, user *model.User) error {
 
 // Get method selects a user from the database with
 // some id
-func (db *UsersDB) Get(ctx context.Context, id int64) (*model.User, error) {
+func (db *UsersDB) Get(ctx context.Context, eMail string) (*model.User, error) {
 
 	query := `
 		select email,
@@ -92,10 +92,10 @@ func (db *UsersDB) Get(ctx context.Context, id int64) (*model.User, error) {
 			   password,
 			   notifications
 		from users
-		where id=$1
+		where email=$1
 	`
 	var user model.User
-	row := db.db.QueryRowxContext(ctx, query, id)
+	row := db.db.QueryRowxContext(ctx, query, eMail)
 	var birthDate time.Time
 	err := row.Scan(&user.Email, &birthDate, &user.Sign, &user.Name, &user.Password, &user.Notifications)
 	user.BirthInfo = protobuf.TimeToInternalDate(birthDate)

@@ -6,6 +6,8 @@ import (
 	"github.com/Markuysa/astroMSA/authService/app/gapi/server"
 	"github.com/Markuysa/astroMSA/authService/app/internal/config"
 	db "github.com/Markuysa/astroMSA/authService/app/internal/database"
+	"github.com/Markuysa/astroMSA/authService/app/internal/logger"
+	"go.uber.org/zap"
 	"log"
 	"net"
 
@@ -14,10 +16,10 @@ import (
 )
 
 // runGRPC method starts a gRPC server of the service
-func runGRPC(db *db.UsersDB, config *config.Config, port string) {
+func runGRPC(db *db.UsersDB, config *config.Config, port string, logger *zap.Logger) {
 	grpcServer := grpc.NewServer()
 	log.Print(port)
-	authServer := server.NewServer(config, db, port)
+	authServer := server.NewServer(config, db, port, logger)
 	pb.RegisterAuthServiceServer(grpcServer, authServer)
 	reflection.Register(grpcServer)
 
@@ -42,6 +44,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	runGRPC(usersDatabase, config2, ":9093")
+	logg, err := logger.InitLogger()
+	if err != nil {
+		log.Fatal(err)
+	}
+	runGRPC(usersDatabase, config2, ":9093", logg)
 
 }
