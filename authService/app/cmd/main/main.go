@@ -48,6 +48,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	runGRPC(usersDatabase, config2, ":9093", logg)
+	runGRPC(usersDatabase, config2, ":9092", logg)
 
 }

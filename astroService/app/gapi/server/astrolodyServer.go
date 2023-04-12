@@ -17,7 +17,7 @@ type Server struct {
 // NewServer creates an object of the server
 func NewServer(worker *astroWorker.AstroWorker, logger *zap.Logger) *Server {
 	return &Server{
-		Port:            ":9091",
+		Port:            ":9090",
 		astrologyWorker: worker,
 		logger:          logger,
 	}

@@ -43,6 +43,12 @@ func (s *Server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUs
 // AddUser method handles the /api/v1/users/add endpoint
 // and adds some user, then returns the status code in AddUserResponse message
 func (s *Server) AddUser(ctx context.Context, req *pb.AddUserRequest) (*pb.AddUserResponse, error) {
+	s.Logger.Info("add user request received",
+		zap.String("Email", req.Email),
+		zap.String("Name", req.Name),
+		zap.Bool("Notifications", req.Notifications),
+		zap.Any("BirthDate", req.BirthInfo),
+	)
 	user := protobuf.ConvertUserRequestToUserStruct(req)
 	err := s.UsersDB.Add(ctx, user)
 	if err != nil {

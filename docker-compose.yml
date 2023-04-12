@@ -4,74 +4,52 @@ services:
     container_name: astroGateway
     build: ./apiGateway
     ports:
-      - "8086:8085"
+      - "8086:8086"
     depends_on:
       - astro
       - messages
       - auth
-    networks:
-      astronet:
-        aliases:
-          - gateway
-    network_mode: host
-  messages:
-    container_name: messagesSenderService
-    build: ./messageSenderService
-    working_dir: /app
-    ports:
-      - "9090:9002"
-    networks:
-      astronet:
-        aliases:
-          - messages
-    network_mode: host
+      - postgres
+    restart: always
   astro:
     container_name: astrologyService
     build: ./astroService
     working_dir: /app
     ports:
-      - "9091:9003"
-    networks:
-      astronet:
-        aliases:
-          - astro
-    network_mode: host
+      - "9090:9090"
+    depends_on:
+      - postgres
+    restart: always
+  messages:
+    container_name: messagesSenderService
+    build: ./messageSenderService
+    working_dir: /app
+    ports:
+      - "9091:9091"
+    depends_on:
+      - postgres
+    restart: always
   auth:
     container_name: authAstroService
     build: ./authService
     working_dir: /app
     ports:
-      - "9093:9004"
+      - "9092:9092"
     depends_on:
       - postgres
     networks:
-      astronet:
+      default:
         aliases:
-          - auth
-    network_mode: host
+            - db
+    restart: always
   postgres:
     image: postgres
     environment:
       - POSTGRES_PASSWORD=islam20011
-      - POSTGRES_DB=usersDB
-      - POSTGRES_USER=root
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      astronet:
-        aliases:
-          - postgres
-    network_mode: host
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -q -U postgres || exit 1"]
-      interval: 5s
-      timeout: 30s
-      retries: 3
-      start_period: 20s
-
+    restart: always
 volumes:
   postgres_data:
-networks:
-  astronet:

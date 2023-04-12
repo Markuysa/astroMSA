@@ -7,6 +7,7 @@ import (
 	"github.com/Markuysa/astroMSA/authService/app/internal/helpers/hash"
 	"github.com/Markuysa/astroMSA/authService/app/internal/helpers/protobuf"
 	"github.com/Markuysa/astroMSA/authService/app/internal/model"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	"github.com/jmoiron/sqlx"
 	"log"
 	"time"
@@ -36,7 +37,7 @@ func New(ctx context.Context) *UsersDB {
 
 	datab, err := sqlx.ConnectContext(ctx,
 		"postgres",
-		"host=localhost port=5432 user=usersDB password=islam20011 sslmode=disable")
+		"host=postgres user=postgres port=5432 password=islam20011 sslmode=disable")
 
 	if err != nil {
 		log.Fatal(err)

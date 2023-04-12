@@ -3,7 +3,7 @@ module github.com/Markuysa/astroMSA/authService
 go 1.19
 
 require (
-	github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230411063418-84301ff054b1
+	github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230412065928-a5c4844a9cc3
 	github.com/Markuysa/astroMSA/astroService v0.0.0-20230411063418-84301ff054b1
 	github.com/go-redis/cache/v8 v8.4.4
 	github.com/go-redis/redis/v8 v8.11.3

@@ -12,9 +12,9 @@ import (
 )
 
 var (
-	messageService = ":9090"
-	astroService   = ":9091"
-	authService    = ":9093"
+	astroService   = "dns:///astro:9090"
+	messageService = "dns:///messages:9091"
+	authService    = "dns:///auth:9092"
 )
 
 // HTTPProxy REST API gateway for incoming requests
