@@ -12,7 +12,7 @@ TODO
   <li><a href="#">Finish services</a></li>
   <li><a href="#">Add observability</a></li>
   <li><a href="#">Cache</a></li>
-  <li><a href="#">grpc interactions btwn services/api gateway</a></li>
+  <li><a href="#"><s>grpc interactions btwn services/api gateway</s></a></li>
   <li><a href="#">sending predictions by the email (need to deploy)</a></li>
   <li><a href="#">to be continued...</a></li>
 </ol>
