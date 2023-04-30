@@ -1,6 +1,7 @@
 version: '3.9'
 services:
   gateway:
+    image: markuysa/astro-messages:latest
     container_name: astroGateway
     build: ./apiGateway
     ports:
@@ -12,6 +13,7 @@ services:
       - postgres
     restart: always
   astro:
+    image: markuysa/astro-messages:latest
     container_name: astrologyService
     build: ./astroService
     working_dir: /app
@@ -21,6 +23,7 @@ services:
       - postgres
     restart: always
   messages:
+    image: markuysa/astro-messages:latest
     container_name: messagesSenderService
     build: ./messageSenderService
     working_dir: /app

@@ -3,14 +3,15 @@ package messageSender
 import (
 	"context"
 	"fmt"
+	pb "github.com/Markuysa/astroMSA/apiGateway/app/protobuf/gen"
 	astroModels "github.com/Markuysa/astroMSA/astroService/app/pkg/model"
-	"github.com/Markuysa/astroMSA/messageSenderService/app/gapi/client"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/config"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/helpers/htmlHelper"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/helpers/protoHelper"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/model"
 	externalModels "github.com/Markuysa/astroMSA/messageSenderService/app/pkg/model"
 	"gopkg.in/gomail.v2"
+	"log"
 	"sync"
 )
 
@@ -53,15 +54,27 @@ func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, req []extern
 	wg := sync.WaitGroup{}
 	bodyPath := "app/ui/Prediction.html"
 	receiversChan := make(chan astroModels.HandledPrediction, 10)
+	log.Println(req)
 	go func() {
 		for _, receiver := range req {
-			pbPrediction, err := client.FetchPrediction(ctx, "today", receiver.Zodiac)
-			prediction := protoHelper.PredictionFromPb(pbPrediction)
-			if err != nil {
-				return
+			//pbPrediction, err := client.FetchPrediction(ctx, "today", receiver.Zodiac)
+			pbPrediction := pb.PredictionResponse{
+				Mood:          "smth",
+				LuckyTime:     "som",
+				DateRange:     "asd",
+				Description:   "u will be the happiest man in the world)",
+				CurrentDate:   "today))",
+				Compatibility: "aries",
+				Color:         "black",
+				LuckyNumber:   "1",
 			}
+			prediction := protoHelper.PredictionFromPb(&pbPrediction)
+			//if err != nil {
+			//	return
+			//}
 			receiversChan <- astroModels.HandledPrediction{Prediction: prediction, Destination: receiver.Email}
 		}
+		close(receiversChan)
 	}()
 	wg.Add(1)
 	go func() {
@@ -79,5 +92,6 @@ func (s *MsgSenderWorker) SendDailyPredictions(ctx context.Context, req []extern
 		}
 	}()
 	wg.Wait()
+	log.Println("ENDED")
 	return nil
 }

@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	astroServerPort = "9091"
-	authServerPort  = "9093"
+	astroServerPort = "9090"
+	authServerPort  = "9092"
 )
 
 // FetchPrediction method is needed to get a prediction

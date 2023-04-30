@@ -7,10 +7,9 @@ import "google/type/date.proto";
 
 // Required types
 message Receiver{
-  string Zodiac = 1;
-  string Email  = 2;
+  string zodiac = 1;
+  string email  = 2;
 }
-
 // Message sender service
 service MessageService{
   rpc SendDailyPredictions(DailyPredictionsRequest) returns (DailyPredictionsResponse){
@@ -41,36 +40,47 @@ service AuthService{
   rpc GetUsersWithAllowedNotifications(NotificationsRequest) returns (NotificationResponse){
       option (google.api.http).get = "/api/v1/users/getNotifications";
   };
+  rpc LoginUser(LoginUserRequest) returns (LoginUserResponse){
+    option (google.api.http).post = "/api/v1/users/login";
+  }
 }
 message NotificationsRequest{
 
+}
+message LoginUserResponse{
+  bool status = 1;
 }
 message NotificationResponse{
   repeated Receiver receivers = 1;
 }
 message GetUserRequest{
-  string eMail = 1;
+  string email = 1;
 }
 message GetUserResponse{
   User user = 1;
 }
+message LoginUserRequest{
+  string email=1;
+  string password=2;
+}
 message AddUserRequest{
-  string Email = 1;
-  string Name = 2;
-  string Password = 3;
-  bool Notifications=4;
-  google.type.Date BirthInfo = 5;
+  string email = 1;
+  string name = 2;
+  string password = 3;
+  bool notifications=4;
+  google.type.Date birthInfo = 5;
 }
 message AddUserResponse{
-  bool Status = 1;
+  bool status = 1;
 }
 message User{
-  string Email = 1;
-  string Sign = 2;
-  string Name = 3;
-  string Password = 4;
-  uint64 ID = 5;
-  google.type.Date BirthInfo = 6;
+  string email = 1;
+  string sign = 2;
+  string name = 3;
+  string password = 4;
+  uint64 iD = 5;
+  bool  notifications=6;
+  google.type.Date BirthInfo = 7;
 }
 
 // AstroService
@@ -92,12 +102,12 @@ message PredictionRequest{
   string Day  = 2;
 }
 message PredictionResponse{
-  string DateRange     = 1;
-  string CurrentDate   = 2;
-  string Description   = 3;
-  string Compatibility = 4;
-  string Mood          = 5;
-  string Color         = 6;
-  string LuckyNumber   = 7;
-  string LuckyTime     = 8;
+  string dateRange     = 1;
+  string currentDate   = 2;
+  string description   = 3;
+  string compatibility = 4;
+  string mood          = 5;
+  string color         = 6;
+  string luckyNumber   = 7;
+  string luckyTime     = 8;
 }

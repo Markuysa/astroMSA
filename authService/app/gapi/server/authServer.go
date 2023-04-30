@@ -32,8 +32,8 @@ func NewServer(config *config.Config, usersDB *database.UsersDB, port string, lo
 // GetUser method handles the /api/v1/users/get endpoint
 // and returns a protobuf user message
 func (s *Server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error) {
-	s.Logger.Info("get user request received", zap.String("eMail", req.GetEMail()))
-	user, err := s.UsersDB.Get(ctx, req.GetEMail())
+	s.Logger.Info("get user request received", zap.String("eMail", req.GetEmail()))
+	user, err := s.UsersDB.Get(ctx, req.GetEmail())
 	if err != nil {
 		return nil, err
 	}
@@ -55,4 +55,16 @@ func (s *Server) AddUser(ctx context.Context, req *pb.AddUserRequest) (*pb.AddUs
 		return &pb.AddUserResponse{Status: false}, err
 	}
 	return &pb.AddUserResponse{Status: true}, nil
+}
+
+func (s *Server) GetUsersWithAllowedNotifications(ctx context.Context, req *pb.NotificationsRequest) (*pb.NotificationResponse, error) {
+	s.Logger.Info("get user with allowed notifications request received")
+	users, _ := s.UsersDB.GetUsersEmailsWithAllowedNotifications(ctx)
+	usersPb := protobuf.ConvertReceiversToPbNotificationsResponse(users)
+	return usersPb, nil
+}
+func (s *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (*pb.LoginUserResponse, error) {
+	s.Logger.Info("login user:", zap.String("username", req.Email))
+	ok, _ := s.UsersDB.AuthUser(ctx, req.Email, req.Password)
+	return &pb.LoginUserResponse{Status: ok}, nil
 }

@@ -22,7 +22,7 @@ func PredictionFromPb(prediction *pb.PredictionResponse) *model.Prediction {
 func ReceiversFromPb(request *pb.DailyPredictionsRequest) []external.Receiver {
 	var receivers []external.Receiver
 	for _, receiverpb := range request.Receivers {
-		receiver := external.Receiver{Email: receiverpb.Email, Zodiac: receiverpb.Email}
+		receiver := external.Receiver{Email: receiverpb.Email, Zodiac: receiverpb.Zodiac}
 		receivers = append(receivers, receiver)
 	}
 	return receivers

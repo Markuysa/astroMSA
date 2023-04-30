@@ -111,6 +111,7 @@ type AuthServiceClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	AddUser(ctx context.Context, in *AddUserRequest, opts ...grpc.CallOption) (*AddUserResponse, error)
 	GetUsersWithAllowedNotifications(ctx context.Context, in *NotificationsRequest, opts ...grpc.CallOption) (*NotificationResponse, error)
+	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 }
 
 type authServiceClient struct {
@@ -148,6 +149,15 @@ func (c *authServiceClient) GetUsersWithAllowedNotifications(ctx context.Context
 	return out, nil
 }
 
+func (c *authServiceClient) LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error) {
+	out := new(LoginUserResponse)
+	err := c.cc.Invoke(ctx, "/protobuf.AuthService/LoginUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
@@ -155,6 +165,7 @@ type AuthServiceServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	AddUser(context.Context, *AddUserRequest) (*AddUserResponse, error)
 	GetUsersWithAllowedNotifications(context.Context, *NotificationsRequest) (*NotificationResponse, error)
+	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -170,6 +181,9 @@ func (UnimplementedAuthServiceServer) AddUser(context.Context, *AddUserRequest) 
 }
 func (UnimplementedAuthServiceServer) GetUsersWithAllowedNotifications(context.Context, *NotificationsRequest) (*NotificationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsersWithAllowedNotifications not implemented")
+}
+func (UnimplementedAuthServiceServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 
@@ -238,6 +252,24 @@ func _AuthService_GetUsersWithAllowedNotifications_Handler(srv interface{}, ctx 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).LoginUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protobuf.AuthService/LoginUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).LoginUser(ctx, req.(*LoginUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -256,6 +288,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUsersWithAllowedNotifications",
 			Handler:    _AuthService_GetUsersWithAllowedNotifications_Handler,
+		},
+		{
+			MethodName: "LoginUser",
+			Handler:    _AuthService_LoginUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

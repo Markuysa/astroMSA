@@ -7,10 +7,12 @@ import (
 	"github.com/Markuysa/astroMSA/authService/app/internal/helpers/hash"
 	"github.com/Markuysa/astroMSA/authService/app/internal/helpers/protobuf"
 	"github.com/Markuysa/astroMSA/authService/app/internal/model"
+	messagesModel "github.com/Markuysa/astroMSA/messageSenderService/app/pkg/model"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	"github.com/jmoiron/sqlx"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 	"log"
-	"time"
 )
 
 var (
@@ -23,8 +25,9 @@ var (
 // UsersRepository - Interface of users database
 type UsersRepository interface {
 	Add(ctx context.Context, user *model.User) error
-	Get(ctx context.Context, id int64) (*model.User, error)
-	GetUsersEmailsWithAllowedNotifications(ctx context.Context) ([]string, error)
+	Get(ctx context.Context, eMail string) (*model.User, error)
+	GetUsersEmailsWithAllowedNotifications(ctx context.Context) ([]messagesModel.Receiver, error)
+	AuthUser(ctx context.Context, email string, password string) (bool, error)
 }
 
 // UsersDB - structure, that implements a UsersRepository interface
@@ -38,11 +41,38 @@ func New(ctx context.Context) *UsersDB {
 	datab, err := sqlx.ConnectContext(ctx,
 		"postgres",
 		"host=postgres user=postgres port=5432 password=islam20011 sslmode=disable")
-
+	db, err := gorm.Open(postgres.Open("host=postgres user=postgres port=5432 password=islam20011 sslmode=disable"), &gorm.Config{})
+	if err != nil {
+		return nil
+	}
+	// создание таблицы
+	err = db.AutoMigrate(&model.User{})
+	if err != nil {
+		return nil
+	}
 	if err != nil {
 		log.Fatal(err)
 	}
 	return &UsersDB{db: datab}
+}
+func (db *UsersDB) AuthUser(ctx context.Context, email string, password string) (bool, error) {
+
+	query := `
+	select password from users
+	where email=$1
+`
+	row, err := db.db.QueryContext(ctx, query, email)
+	if err != nil {
+		return false, err
+	}
+	var passwordDB string
+	if err = row.Scan(&passwordDB); err != nil {
+		return false, err
+	}
+	if ok := hash.CheckPasswordHash(password, passwordDB); ok {
+		return true, nil
+	}
+	return false, errors.New("incorrect password or username")
 }
 
 // Add method creates user object and saves him/her in the database
@@ -66,10 +96,10 @@ func (db *UsersDB) Add(ctx context.Context, user *model.User) error {
 	    $1,$2,$3,$4,$5,$6
 	)
 	`
-	user.Sign = astroWorker.CalculateSign(user.BirthInfo)
+	user.Sign = astroWorker.CalculateSign(protobuf.TimeToInternalDate(user.BirthInfo))
 	_, err = db.db.ExecContext(ctx, query,
 		user.Email,
-		protobuf.DateToTime(user.BirthInfo),
+		user.BirthInfo,
 		user.Sign,
 		user.Name,
 		password,
@@ -97,9 +127,7 @@ func (db *UsersDB) Get(ctx context.Context, eMail string) (*model.User, error) {
 	`
 	var user model.User
 	row := db.db.QueryRowxContext(ctx, query, eMail)
-	var birthDate time.Time
-	err := row.Scan(&user.Email, &birthDate, &user.Sign, &user.Name, &user.Password, &user.Notifications)
-	user.BirthInfo = protobuf.TimeToInternalDate(birthDate)
+	err := row.Scan(&user.Email, &user.BirthInfo, &user.Sign, &user.Name, &user.Password, &user.Notifications)
 	if err != nil {
 		return nil, err
 	}
@@ -108,21 +136,21 @@ func (db *UsersDB) Get(ctx context.Context, eMail string) (*model.User, error) {
 
 // GetUsersEmailsWithAllowedNotifications selects all the users with allowed notifications
 // to send the daily predictions through gmail
-func (db *UsersDB) GetUsersEmailsWithAllowedNotifications(ctx context.Context) ([]string, error) {
+func (db *UsersDB) GetUsersEmailsWithAllowedNotifications(ctx context.Context) ([]messagesModel.Receiver, error) {
 
 	query := `
-		select email
+		select email, sign
 		from users
 		where notifications=true
 	`
-	var users []string
-	var userEmail string
+	var users []messagesModel.Receiver
+	var userEmail, sign string
 	rows, err := db.db.QueryContext(ctx, query)
 	for rows.Next() {
-		if err := rows.Scan(&userEmail); err != nil {
+		if err := rows.Scan(&userEmail, &sign); err != nil {
 			return nil, err
 		}
-		users = append(users, userEmail)
+		users = append(users, messagesModel.Receiver{Email: userEmail, Zodiac: sign})
 	}
 	if err != nil {
 		return nil, err

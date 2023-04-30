@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	authServerPort    = "9091"
-	messageServerPort = "9090"
+	messageService = "dns:///messages:9091"
+	authService    = "dns:///auth:9092"
 )
 
 //func newAuthClient() (pbAuth.AuthServiceClient, error) {
@@ -40,14 +40,15 @@ var (
 // the predictions
 func SendDailyPredictions(ctx context.Context) error {
 	//connecting to msg sender service
-	messageServerConnection, err := grpc.Dial(messageServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	messageServerConnection, err := grpc.Dial(messageService, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	defer messageServerConnection.Close()
 	if err != nil {
 		return errors.New(fmt.Sprintf("failed to connect: %v", err))
 	}
 	msgClient := pb.NewMessageServiceClient(messageServerConnection)
+
 	//connecting to auth server
-	authServerConnection, err := grpc.Dial(authServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	authServerConnection, err := grpc.Dial(authService, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	defer authServerConnection.Close()
 	if err != nil {
 		return errors.New(fmt.Sprintf("failed to connect: %v", err))

@@ -4,7 +4,9 @@ import (
 	pb "github.com/Markuysa/astroMSA/apiGateway/app/protobuf/gen"
 	"github.com/Markuysa/astroMSA/authService/app/internal/model"
 	"github.com/Markuysa/astroMSA/authService/app/pkg/externalModels"
+	messagesModel "github.com/Markuysa/astroMSA/messageSenderService/app/pkg/model"
 	"google.golang.org/genproto/googleapis/type/date"
+	"log"
 	"time"
 )
 
@@ -41,11 +43,14 @@ func TimeToInternalDate(date time.Time) externalModels.Date {
 // to protobuf response struct
 func ConvertUserToPbResponse(user *model.User) *pb.GetUserResponse {
 	return &pb.GetUserResponse{User: &pb.User{
-		Email:     user.Email,
-		Sign:      user.Sign,
-		Name:      user.Name,
-		ID:        uint64(int64(user.ID)),
-		BirthInfo: DateToProtobuf(user.BirthInfo),
+		Email: user.Email,
+		Sign:  user.Sign,
+		Name:  user.Name,
+		ID:    uint64(int64(user.ID)),
+		BirthInfo: &date.Date{Day: int32(user.BirthInfo.Day()),
+			Month: int32(user.BirthInfo.Month()),
+			Year:  int32(user.BirthInfo.Year()),
+		},
 	}}
 }
 
@@ -57,11 +62,28 @@ func ConvertUserRequestToUserStruct(request *pb.AddUserRequest) *model.User {
 		Email:    request.Email,
 		Name:     request.Name,
 		Password: request.Password,
-		BirthInfo: *externalModels.New(
-			int64(request.BirthInfo.Day),
-			int64(request.BirthInfo.Month),
-			int64(request.BirthInfo.Year),
+		BirthInfo: time.Date(
+			int(request.BirthInfo.Year),
+			time.Month(request.BirthInfo.Month),
+			int(request.BirthInfo.Day),
+			0,
+			0,
+			0,
+			0,
+			time.Local,
 		),
 		Notifications: request.Notifications,
 	}
+}
+
+func ConvertReceiversToPbNotificationsResponse(receivers []messagesModel.Receiver) *pb.NotificationResponse {
+	response := pb.NotificationResponse{}
+	for _, receiver := range receivers {
+		response.Receivers = append(response.Receivers, &pb.Receiver{
+			Zodiac: receiver.Zodiac,
+			Email:  receiver.Email},
+		)
+	}
+	log.Println(response.GetReceivers())
+	return &response
 }
