@@ -63,6 +63,7 @@ func (s *Server) GetUsersWithAllowedNotifications(ctx context.Context, req *pb.N
 	usersPb := protobuf.ConvertReceiversToPbNotificationsResponse(users)
 	return usersPb, nil
 }
+
 func (s *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (*pb.LoginUserResponse, error) {
 	s.Logger.Info("login user:", zap.String("username", req.Email))
 	ok, _ := s.UsersDB.AuthUser(ctx, req.Email, req.Password)

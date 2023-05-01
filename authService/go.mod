@@ -3,7 +3,7 @@ module github.com/Markuysa/astroMSA/authService
 go 1.19
 
 require (
-	github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230413065702-688ce7e75bf1
+	github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230430131113-4b8141153725
 	github.com/Markuysa/astroMSA/astroService v0.0.0-20230411063418-84301ff054b1
 	github.com/Markuysa/astroMSA/messageSenderService v0.0.0-20230413065702-688ce7e75bf1
 	github.com/go-redis/cache/v8 v8.4.4
@@ -19,7 +19,6 @@ require (
 )
 
 require (
-	github.com/Markuysa/astroMSA v0.0.0-20230413065702-688ce7e75bf1 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect

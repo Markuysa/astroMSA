@@ -1,19 +1,19 @@
 version: '3.9'
 services:
   gateway:
-    image: markuysa/astro-messages:latest
+    image: markuysa/astro-gateway:latest
     container_name: astroGateway
     build: ./apiGateway
     ports:
       - "8086:8086"
-    depends_on:
-      - astro
-      - messages
-      - auth
-      - postgres
+#    depends_on:
+#      - astro
+#      - messages
+#      - auth
+#      - postgres
     restart: always
   astro:
-    image: markuysa/astro-messages:latest
+    image: markuysa/astro-predictions:latest
     container_name: astrologyService
     build: ./astroService
     working_dir: /app
@@ -33,6 +33,7 @@ services:
       - postgres
     restart: always
   auth:
+    image: markuysa/astro-auth:latest
     container_name: authAstroService
     build: ./authService
     working_dir: /app

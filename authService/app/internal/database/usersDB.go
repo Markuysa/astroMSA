@@ -61,12 +61,9 @@ func (db *UsersDB) AuthUser(ctx context.Context, email string, password string) 
 	select password from users
 	where email=$1
 `
-	row, err := db.db.QueryContext(ctx, query, email)
-	if err != nil {
-		return false, err
-	}
 	var passwordDB string
-	if err = row.Scan(&passwordDB); err != nil {
+	err := db.db.QueryRowx(query, email).Scan(&passwordDB)
+	if err != nil {
 		return false, err
 	}
 	if ok := hash.CheckPasswordHash(password, passwordDB); ok {
