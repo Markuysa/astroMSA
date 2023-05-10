@@ -35,7 +35,7 @@ func (s *Server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUs
 	s.Logger.Info("get user request received", zap.String("eMail", req.GetEmail()))
 	user, err := s.UsersDB.Get(ctx, req.GetEmail())
 	if err != nil {
-		return nil, err
+		return &pb.GetUserResponse{}, err
 	}
 	return protobuf.ConvertUserToPbResponse(user), nil
 }
@@ -59,7 +59,10 @@ func (s *Server) AddUser(ctx context.Context, req *pb.AddUserRequest) (*pb.AddUs
 
 func (s *Server) GetUsersWithAllowedNotifications(ctx context.Context, req *pb.NotificationsRequest) (*pb.NotificationResponse, error) {
 	s.Logger.Info("get user with allowed notifications request received")
-	users, _ := s.UsersDB.GetUsersEmailsWithAllowedNotifications(ctx)
+	users, err := s.UsersDB.GetUsersEmailsWithAllowedNotifications(ctx)
+	if err != nil {
+		return &pb.NotificationResponse{}, err
+	}
 	usersPb := protobuf.ConvertReceiversToPbNotificationsResponse(users)
 	return usersPb, nil
 }

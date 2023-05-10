@@ -7,6 +7,7 @@ import (
 	pb "github.com/Markuysa/astroMSA/apiGateway/app/protobuf/gen"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"log"
 )
 
 var (
@@ -23,10 +24,12 @@ func FetchPrediction(ctx context.Context, day string, sign string) (*pb.Predicti
 		return nil, errors.New(fmt.Sprintf("failed to connect: %v", err))
 	}
 	astroClient := pb.NewAstrologyServiceClient(astroServiceConnection)
-
+	log.Println(day, sign)
 	prediction, err := astroClient.GetPrediction(ctx, &pb.PredictionRequest{Day: day, Sign: sign})
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
+	log.Println(prediction)
 	return prediction, nil
 }

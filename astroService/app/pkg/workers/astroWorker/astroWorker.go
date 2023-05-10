@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Markuysa/astroMSA/astroService/app/internal/config"
+	"github.com/Markuysa/astroMSA/astroService/app/pkg/constanses"
 	"github.com/Markuysa/astroMSA/astroService/app/pkg/model"
 	"github.com/valyala/fasthttp"
 	"net/http"
@@ -55,6 +56,8 @@ func (w *AstroWorker) FetchPrediction(ctx context.Context, sign string, day stri
 	if err != nil {
 		return nil, err
 	}
-
+	if len(prediction.DateRange) == 0 {
+		return constanses.ReturnConst(sign)
+	}
 	return &prediction, nil
 }

@@ -6,11 +6,11 @@ services:
     build: ./apiGateway
     ports:
       - "8086:8086"
-#    depends_on:
-#      - astro
-#      - messages
-#      - auth
-#      - postgres
+    depends_on:
+       - astro
+       - messages
+       - auth
+       - postgres
     restart: always
   astro:
     image: markuysa/astro-predictions:latest
@@ -23,7 +23,7 @@ services:
       - postgres
     restart: always
   messages:
-    image: markuysa/astro-messages:latest
+    #image: markuysa/astro-messages:latest
     container_name: messagesSenderService
     build: ./messageSenderService
     working_dir: /app
