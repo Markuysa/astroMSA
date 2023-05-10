@@ -3,7 +3,7 @@ module github.com/Markuysa/astroMSA/messageSenderService
 go 1.19
 
 require (
-	github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230411063418-84301ff054b1
+	github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230510125526-4d9cbfecd97c
 	github.com/Markuysa/astroMSA/astroService v0.0.0-20230411063418-84301ff054b1
 	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.54.0
@@ -12,6 +12,7 @@ require (
 )
 
 require (
+	github.com/Markuysa/astroMSA/authService v0.0.0-20230510125526-4d9cbfecd97c // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2 // indirect
 	go.uber.org/atomic v1.7.0 // indirect

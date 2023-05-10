@@ -8,6 +8,7 @@ import (
 	"github.com/Markuysa/astroMSA/authService/app/internal/helpers/protobuf"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	"go.uber.org/zap"
+	"google.golang.org/genproto/googleapis/type/date"
 )
 
 // Server struct - structure of gRPC server of the service
@@ -69,6 +70,20 @@ func (s *Server) GetUsersWithAllowedNotifications(ctx context.Context, req *pb.N
 
 func (s *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (*pb.LoginUserResponse, error) {
 	s.Logger.Info("login user:", zap.String("username", req.Email))
-	ok, _ := s.UsersDB.AuthUser(ctx, req.Email, req.Password)
-	return &pb.LoginUserResponse{Status: ok}, nil
+	user, _ := s.UsersDB.AuthUser(ctx, req.Email, req.Password)
+	if user != nil {
+		return &pb.LoginUserResponse{
+			Email:         user.Email,
+			Sign:          user.Sign,
+			Name:          user.Name,
+			ID:            uint64(user.ID),
+			Notifications: user.Notifications,
+			BirthInfo: &date.Date{
+				Day:   int32(user.BirthInfo.Day()),
+				Month: int32(user.BirthInfo.Month()),
+				Year:  int32(user.BirthInfo.Year()),
+			},
+		}, nil
+	}
+	return &pb.LoginUserResponse{}, nil
 }

@@ -79,6 +79,8 @@ github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230413065702-688ce7e75bf1 h1:RN
 github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230413065702-688ce7e75bf1/go.mod h1:lCzX4EcQR7RvHGoGURx6T+geRfDcT63XkAEOE7KAAAI=
 github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230430131113-4b8141153725 h1:5+XTCnxgLYz+UxiTA6Geoe2RmJJdjst+5Yr9hoLNyXo=
 github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230430131113-4b8141153725/go.mod h1:lCzX4EcQR7RvHGoGURx6T+geRfDcT63XkAEOE7KAAAI=
+github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230510125526-4d9cbfecd97c h1:nMVOjtC3WLpHkk9qE3QGkBcUaNSIr6+b4oXXaZkcUBU=
+github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230510125526-4d9cbfecd97c/go.mod h1:lCzX4EcQR7RvHGoGURx6T+geRfDcT63XkAEOE7KAAAI=
 github.com/Markuysa/astroMSA/astroService v0.0.0-20230411063418-84301ff054b1 h1:bjpYbltGUMyjAhFkF1ihMxyl5HqoW3LhaSk1D7+PhJA=
 github.com/Markuysa/astroMSA/astroService v0.0.0-20230411063418-84301ff054b1/go.mod h1:nxQMTpnHfIpuys/DHOLIbr7i6iZRAht9g40n5Md7XVE=
 github.com/Markuysa/astroMSA/messageSenderService v0.0.0-20230413065702-688ce7e75bf1 h1:t3tg6sjib3CuQoKFjHxSb9HDst2SmgEl5F/UVe+Iy4M=

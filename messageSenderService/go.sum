@@ -1,9 +1,14 @@
 github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230411063418-84301ff054b1 h1:c0rS0jpWNX9ICb5QDnlVrWwo8CHYUSO43CJ5Aehf9W8=
 github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230411063418-84301ff054b1/go.mod h1:lCzX4EcQR7RvHGoGURx6T+geRfDcT63XkAEOE7KAAAI=
+github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230430131113-4b8141153725/go.mod h1:lCzX4EcQR7RvHGoGURx6T+geRfDcT63XkAEOE7KAAAI=
+github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230510125526-4d9cbfecd97c h1:nMVOjtC3WLpHkk9qE3QGkBcUaNSIr6+b4oXXaZkcUBU=
+github.com/Markuysa/astroMSA/apiGateway v0.0.0-20230510125526-4d9cbfecd97c/go.mod h1:lCzX4EcQR7RvHGoGURx6T+geRfDcT63XkAEOE7KAAAI=
 github.com/Markuysa/astroMSA/astroService v0.0.0-20230318164414-8e1ded19a503 h1:JcrEbwv6HJV7gstX6cXflzFD6UAe9J00DRnxQIK/Nd0=
 github.com/Markuysa/astroMSA/astroService v0.0.0-20230318164414-8e1ded19a503/go.mod h1:oc38bVQVCt6b1p35yIgXSuOJPB/3d7w2x8PHb+z0dSA=
 github.com/Markuysa/astroMSA/astroService v0.0.0-20230411063418-84301ff054b1 h1:bjpYbltGUMyjAhFkF1ihMxyl5HqoW3LhaSk1D7+PhJA=
 github.com/Markuysa/astroMSA/astroService v0.0.0-20230411063418-84301ff054b1/go.mod h1:nxQMTpnHfIpuys/DHOLIbr7i6iZRAht9g40n5Md7XVE=
+github.com/Markuysa/astroMSA/authService v0.0.0-20230510125526-4d9cbfecd97c h1:foU5yAHOlo/u1tYdOex+5Caiw/VKk+FSm0gELj8msDU=
+github.com/Markuysa/astroMSA/authService v0.0.0-20230510125526-4d9cbfecd97c/go.mod h1:yvzqOQpv7RqW1WaMCdWwHFNhs6KviU/CKqxWEbZt0O8=
 github.com/benbjohnson/clock v1.1.0 h1:Q92kusRqC1XV2MjkWETPvjJVqKetz1OzxZB7mHJLju8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=

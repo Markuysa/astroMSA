@@ -3,10 +3,10 @@ package messageSender
 import (
 	"context"
 	"fmt"
-	"github.com/Markuysa/astroMSA/astroService/app/pkg/constanses"
 	astroModels "github.com/Markuysa/astroMSA/astroService/app/pkg/model"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/gapi/client"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/config"
+	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/constanses"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/helpers/htmlHelper"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/helpers/protoHelper"
 	"github.com/Markuysa/astroMSA/messageSenderService/app/internal/model"

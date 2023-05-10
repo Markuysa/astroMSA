@@ -27,7 +27,7 @@ type UsersRepository interface {
 	Add(ctx context.Context, user *model.User) error
 	Get(ctx context.Context, eMail string) (*model.User, error)
 	GetUsersEmailsWithAllowedNotifications(ctx context.Context) ([]messagesModel.Receiver, error)
-	AuthUser(ctx context.Context, email string, password string) (bool, error)
+	AuthUser(ctx context.Context, email string, password string) (*model.User, error)
 }
 
 // UsersDB - structure, that implements a UsersRepository interface
@@ -55,21 +55,16 @@ func New(ctx context.Context) *UsersDB {
 	}
 	return &UsersDB{db: datab}
 }
-func (db *UsersDB) AuthUser(ctx context.Context, email string, password string) (bool, error) {
+func (db *UsersDB) AuthUser(ctx context.Context, email string, password string) (*model.User, error) {
 
-	query := `
-	select password from users
-	where email=$1
-`
-	var passwordDB string
-	err := db.db.QueryRowx(query, email).Scan(&passwordDB)
+	user, err := db.Get(ctx, email)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
-	if ok := hash.CheckPasswordHash(password, passwordDB); ok {
-		return true, nil
+	if ok := hash.CheckPasswordHash(password, user.Password); ok {
+		return user, nil
 	}
-	return false, errors.New("incorrect password or username")
+	return nil, errors.New("incorrect password or username")
 }
 
 // Add method creates user object and saves him/her in the database

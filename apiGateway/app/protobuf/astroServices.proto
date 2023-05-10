@@ -48,7 +48,12 @@ message NotificationsRequest{
 
 }
 message LoginUserResponse{
-  bool status = 1;
+  string email = 1;
+  string sign = 2;
+  string name = 3;
+  uint64 iD = 5;
+  bool  notifications=6;
+  google.type.Date birthInfo = 7;
 }
 message NotificationResponse{
   repeated Receiver receivers = 1;
@@ -80,7 +85,7 @@ message User{
   string password = 4;
   uint64 iD = 5;
   bool  notifications=6;
-  google.type.Date BirthInfo = 7;
+  google.type.Date birthInfo = 7;
 }
 
 // AstroService
